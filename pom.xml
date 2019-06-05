@@ -31,6 +31,19 @@
             <version>2.2</version>
             <scope>provided</scope>
         </dependency>
+        <!--jstl的核心包-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <!-- mysql的驱动包 -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.15</version>
+        </dependency>
+
     </dependencies>
 
     <build>

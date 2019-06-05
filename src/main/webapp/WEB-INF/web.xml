@@ -32,6 +32,35 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
     </servlet-mapping>
+    
+    
+    <servlet>
+        <servlet-name>CheckcodeServlet</servlet-name>
+        <servlet-class>com.zsy.cms.backend.view.CheckcodeServlet</servlet-class>
+        
+        <init-param>
+            <param-name>width</param-name>
+            <param-value>44</param-value>
+        </init-param>
+        <init-param>
+            <param-name>height</param-name>
+            <param-value>20</param-value>
+        </init-param>
+        <init-param>
+            <param-name>number</param-name>
+            <param-value>4</param-value>
+        </init-param>
+        <init-param>
+            <param-name>codes</param-name>
+            <param-value>ABCDEFGHIJKLMNOPQRSTUVWXYZ</param-value>
+        </init-param>
+
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>CheckcodeServlet</servlet-name>
+        <url-pattern>/backend/images/checkcode.jpg</url-pattern>
+    </servlet-mapping>
 
 
 </web-app>

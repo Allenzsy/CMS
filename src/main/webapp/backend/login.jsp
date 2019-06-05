@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/backend/";
@@ -12,28 +13,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<title>CMS 后台管理工作平台</title>
 	<link rel="stylesheet" type="text/css" href="css/style.css"/>
 	<script type="text/javascript" src="js/js.js"></script>
+  <script type="text/javascript">
+    function reloadcode(img) {
+      img.src = "images/checkcode.jpg?"+Math.random();
+    }
+  </script>
 </head>
 <body>
 <div id="top"> </div>
-<form id="login" action="main.jsp" method="post">
+<form id="login" action="LoginServlet" method="post"> <!-- 这里action就应该是转到LoginServlet-->
   <div id="center">
     <div id="center_left"></div>
     <div id="center_middle">
+      <c:if test="${error != null}">
+        <div style="color:red">${error}</div>
+      </c:if>
       <div class="user">
         <label>用户名：
-        <input type="text" name="user" id="user" />
+        <input type="text" name="username" id="user" value="${param.username}" />
         </label>
       </div>
       <div class="user">
         <label>密　码：
-        <input type="password" name="pwd" id="pwd" />
+        <input type="password" name="password" id="pwd" value="${param.password}" />
         </label>
       </div>
       <div class="chknumber">
         <label>验证码：
-        <input name="chknumber" type="text" id="chknumber" maxlength="4" class="chknumber_input" />
+        <input name="checkcode" type="text" id="chknumber" maxlength="4" class="chknumber_input" />
         </label>
-        <img src="images/checkcode.png" id="safecode" /> <!-- 这是验证码的servlet访问url-->
+        <img src="images/checkcode.jpg" id="safecode" onclick="reloadcode(this)" /> <!-- 这是验证码的servlet访问url-->
       </div>
     </div>
     <div id="center_middle_right"></div>
