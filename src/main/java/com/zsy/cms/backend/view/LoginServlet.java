@@ -26,12 +26,12 @@ public class LoginServlet extends HttpServlet {
         String genCode = (String)request.getSession().getAttribute("genCode");
 
         // 判断客户端提交的checkcode和genCode是否一致
-        if(!checkcode.equalsIgnoreCase(genCode)) {
-            // 重定向到登录页面
-            request.setAttribute("error", "验证码错误");
-            request.getRequestDispatcher("/backend/login.jsp").forward(request, response);
-            return;
-        }
+//        if(!checkcode.equalsIgnoreCase(genCode)) {
+//            // 重定向到登录页面
+//            request.setAttribute("error", "验证码错误");
+//            request.getRequestDispatcher("/backend/login.jsp").forward(request, response);
+//            return;
+//        } //调试先取消验证码验证
 
         // 判断用户名是否存在，判断密码是否正确
         Connection conn = DBUtil.getConn();
@@ -66,6 +66,7 @@ public class LoginServlet extends HttpServlet {
 
 
         // 全部匹配，转向后台页面
+        request.getSession().setAttribute("LOGIN_ADMIN", username);
         response.sendRedirect(request.getContextPath()+"/backend/main.jsp");
 
 

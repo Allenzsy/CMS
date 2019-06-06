@@ -22,7 +22,7 @@ body {
 	font-size: 12px;
 	color: #000000;
 }
-.STYLE5 {font-size: 12}
+.STYLE5 {font-size: 12px}
 .STYLE7 {font-size: 12px; color: #FFFFFF; }
 .STYLE7 a{font-size: 12px; color: #FFFFFF; }
 a img {
@@ -45,7 +45,7 @@ a img {
               <tr>
                 <td height="17"><div align="right"><a href="#" target="rightFrame"><img src="images/pass.gif" width="69" height="17" /></a></div></td>
                 <td><div align="right"><a href="#" target="rightFrame"><img src="images/user.gif" width="69" height="17" /></a></div></td>
-                <td><div align="right"><a href="#" target="_parent"><img src="images/quit.gif" alt=" " width="69" height="17" /></a></div></td>
+                <td><div align="right"><a href="LogoutServlet" target="_parent"><img src="images/quit.gif" alt=" " width="69" height="17" /></a></div></td>
               </tr>
             </table></td>
           </tr>

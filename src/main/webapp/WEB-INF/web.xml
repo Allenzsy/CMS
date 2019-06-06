@@ -8,7 +8,7 @@
     <!-- 能够显示在Tomcat Manager Application上 -->
     <!--<display-name>MyServlet Test</display-name>-->
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>/backend/login.jsp</welcome-file>
     </welcome-file-list>
 
     <servlet-mapping>
