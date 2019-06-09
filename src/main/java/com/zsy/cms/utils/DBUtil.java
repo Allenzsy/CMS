@@ -7,7 +7,7 @@ public class DBUtil {
 
         // 1、载入驱动包
         try { // 利用java的反射机制，forname创建一个类，加载到方法区里，对于类中的静态代码块会自动执行
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
         } catch(ClassNotFoundException e){
             e.printStackTrace();
         }

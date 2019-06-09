@@ -8,11 +8,7 @@
     <!-- 能够显示在Tomcat Manager Application上 -->
     <!--<display-name>MyServlet Test</display-name>-->
     <welcome-file-list>
-<<<<<<< HEAD
-        <welcome-file>login.jsp</welcome-file>
-=======
         <welcome-file>/backend/login.jsp</welcome-file>
->>>>>>> temp
     </welcome-file-list>
 
     <servlet-mapping>
@@ -65,6 +61,29 @@
         <servlet-name>CheckcodeServlet</servlet-name>
         <url-pattern>/backend/images/checkcode.jpg</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>ArticleSearchServlet</servlet-name>
+        <servlet-class>com.zsy.cms.backend.view.ArticleSearchServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ArticleSearchServlet</servlet-name>
+        <url-pattern>/backend/ArticleSearchServlet</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>com.zsy.cms.backend.view.LoginFilter</filter-class>
+        <init-param>
+            <param-name>filterPattern</param-name>
+            <param-value>.*Servlet|.*\.jsp</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>LoginFilter</filter-name>
+        <url-pattern>/backend/*</url-pattern>
+    </filter-mapping>
 
 
 </web-app>

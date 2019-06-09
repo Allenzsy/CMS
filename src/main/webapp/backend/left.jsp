@@ -72,7 +72,7 @@ body {
   <ul id="navigation">
     <li> <a class="head">文章管理</a>
       <ul>
-        <li><a href="#" target="rightFrame">查询文章</a></li>
+        <li><a href="ArticleSearchServlet" target="rightFrame">查询文章</a></li>
         <li><a href="#" target="rightFrame">添加文章</a></li>
         <li><a href="#" target="rightFrame">留言管理</a></li>
       </ul>
