@@ -89,7 +89,7 @@ td {
               </tr>
             </table></td>
             <td><div align="right"><span class="STYLE1">
-             &nbsp;&nbsp;<img src="images/add.gif" width="10" height="10" /> <a href="#">添加</a>   
+             &nbsp;&nbsp;<img src="images/add.gif" width="10" height="10" /> <a href="article/add_article.jsp">添加</a>
              &nbsp;&nbsp;<img src="images/edit.gif" width="10" height="10" /> <a href="#">发布</a>
              &nbsp; <img src="images/del.gif" width="10" height="10" /> <a href="#">删除</a>    &nbsp;&nbsp;   &nbsp;
              </span><span class="STYLE1"> &nbsp;</span></div></td>

@@ -1,11 +1,13 @@
 package com.zsy.cms.backend.view;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebServlet("/backend/LogoutServlet")
 public class LogoutServlet extends HttpServlet {
 
     @Override
@@ -14,6 +16,6 @@ public class LogoutServlet extends HttpServlet {
         // 清空http session中所有参数，并把http session对象销毁
         req.getSession().invalidate();
         // 重定向到登录页面
-        resp.sendRedirect(req.getContextPath()+"backend/login.jsp");
+        resp.sendRedirect(req.getContextPath()+"/backend/login.jsp");
     }
 }

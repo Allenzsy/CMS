@@ -90,7 +90,7 @@ td {
               </tr>
             </table></td>
             <td><div align="right"><span class="STYLE1">
-             &nbsp;&nbsp;<img src="images/add.gif" width="10" height="10" /> <a href="#">添加</a>   
+             &nbsp;&nbsp;<img src="images/add.gif" width="10" height="10" /> <a href="article/add_article.jsp">添加</a>
              &nbsp;&nbsp;<img src="images/edit.gif" width="10" height="10" /> <a href="#">发布</a>
              &nbsp; <img src="images/del.gif" width="10" height="10" /> <a href="#">删除</a>    &nbsp;&nbsp;   &nbsp;
              </span><span class="STYLE1"> &nbsp;</span></div></td>
@@ -122,15 +122,15 @@ td {
               <input type="checkbox" name="checkbox2" id="checkbox2" />
             </div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="#" title="点击查看和编辑文章">${a.title}</a></div></td>
-            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">http://www.leadfar.org</div></td>
+            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.source}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">20</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">5</div></td>
-            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
+            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.createTime}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
             <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
             <a href="#" title="点击发布文章">发布</a> |
-            <a href="#" title="点击删除文章">删除</a> |
+            <a href="DelArticleServlet?id=${a.id}" title="点击删除文章">删除</a> |
             <a href="#" title="点击编辑文章">编辑</a>
             </div></td>
           </tr>
