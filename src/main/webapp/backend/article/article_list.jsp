@@ -75,6 +75,39 @@ td {
 }
 -->
 </style>
+    <script type="text/javascript">
+        function selectAll(field) {
+            // alert(field.checked);
+            var idCheckboxs = document.getElementsByName("id");
+            for (var i = 0; i < idCheckboxs.length; i++) {
+                if(field.checked) {
+                    idCheckboxs[i].checked = true;
+                }else {
+                    idCheckboxs[i].checked = false;
+                }
+
+            }
+        }
+        function del() {
+            var url =  'DelArticleServlet'
+            var idCheckboxs = document.getElementsByName("id");
+            var flag = 0;
+            for (var i = 0; i < idCheckboxs.length; i++) {
+                if(idCheckboxs[i].checked) {
+                    if(flag == 0) {
+                        flag++;
+                        url = url + "?id=" + idCheckboxs[i].value
+                    } else {
+                        url = url + "&id=" + idCheckboxs[i].value;
+                    }
+                }
+            }
+            alert(url);
+            // window.location 相当于执行get
+            window.location = url;
+        }
+
+    </script>
 </head>
 <body>
 <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
@@ -92,7 +125,7 @@ td {
             <td><div align="right"><span class="STYLE1">
              &nbsp;&nbsp;<img src="images/add.gif" width="10" height="10" /> <a href="article/add_article.jsp">添加</a>
              &nbsp;&nbsp;<img src="images/edit.gif" width="10" height="10" /> <a href="#">发布</a>
-             &nbsp; <img src="images/del.gif" width="10" height="10" /> <a href="#">删除</a>    &nbsp;&nbsp;   &nbsp;
+             &nbsp; <img src="images/del.gif" width="10" height="10" /> <a href="javascript:del()">删除</a> <!-- 这里把href定义成了一个javascrip代码 -->
              </span><span class="STYLE1"> &nbsp;</span></div></td>
           </tr>
         </table></td>
@@ -104,7 +137,7 @@ td {
     <table width="100%" border="0" cellpadding="0" cellspacing="1" bgcolor="#a8c7ce">
       <tr>
         <td width="4%" height="20" bgcolor="d3eaef" class="STYLE10"><div align="center">
-          <input type="checkbox" name="checkbox" id="checkbox" />
+          <input type="checkbox" name="checkbox" onclick="selectAll(this)" />
         </div></td>
         <td width="100" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">文章标题</span></div></td>
         <td width="50" height="20" bgcolor="d3eaef" class="STYLE6"><div align="center"><span class="STYLE10">文章来源</span></div></td>
@@ -119,19 +152,19 @@ td {
             <c:forEach items="${articles}" var="a">
           <tr>
             <td height="20" bgcolor="#FFFFFF"><div align="center">
-              <input type="checkbox" name="checkbox2" id="checkbox2" />
+              <input type="checkbox" name="id" value="${a.id}" /> <!-- 在标签中 id是唯一的，name可以是重复的-->
             </div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="#" title="点击查看和编辑文章">${a.title}</a></div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.source}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">20</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">5</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.createTime}</div></td>
-            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
+            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.updateTime}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
             <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
             <a href="#" title="点击发布文章">发布</a> |
             <a href="DelArticleServlet?id=${a.id}" title="点击删除文章">删除</a> |
-            <a href="#" title="点击编辑文章">编辑</a>
+            <a href="OpenUpdateArticleServlet?id=${a.id}" title="点击编辑文章">编辑</a>
             </div></td>
           </tr>
             </c:forEach>

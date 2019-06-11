@@ -40,6 +40,7 @@ public class ArticleSearchServlet extends HttpServlet {
                 a.setContent(rs.getString("content"));
                 a.setSource(rs.getString("source"));
                 a.setCreateTime(rs.getTimestamp("createtime"));
+                a.setUpdateTime(rs.getTimestamp("updatetime"));
                 list.add(a);
             }
         }catch (SQLException e) {

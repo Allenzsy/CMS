@@ -18,20 +18,23 @@ public class DelArticleServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // 拿到唯一标识
-        String id = request.getParameter("id");
-        if(id == null) {
+        // 拿到唯一标识 这里修改为可以批量删除，拿到所以参数名为id的参数值""
+        String[] ids = request.getParameterValues("id");
+        if(ids == null) {
             request.setAttribute("error", "删除错误，id不能为空");
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
+            return;
         }
         // 连接数据库删除文章
         Connection conn = DBUtil.getConn();
         PreparedStatement pstmt = null;
         try {
-            pstmt = conn.prepareStatement("delete from t_article where id = ?");
-            pstmt.setInt(1, Integer.parseInt(id));
-            pstmt.executeUpdate();
-            conn.commit();
+            for(String id : ids) {
+                pstmt = conn.prepareStatement("delete from t_article where id = ?");
+                pstmt.setInt(1, Integer.parseInt(id));
+                pstmt.executeUpdate();
+                conn.commit();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             DBUtil.rollBack(conn);
@@ -42,5 +45,6 @@ public class DelArticleServlet extends HttpServlet {
 
         // 如果正确forward到ArticleSearchServlet（这里不能直接forward到article_list.jsp，因为这样页面中不会有数据）
         request.getRequestDispatcher("/backend/ArticleSearchServlet").forward(request, response);
+        return;
     }
 }

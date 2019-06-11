@@ -36,35 +36,49 @@ A:hover {
   <TBODY>
   <TR>
     <TD vAlign=top height=270>
-      <DIV align=center><BR><IMG height=211 src="common/error.gif" 
-      width=329><BR><BR>
+      <DIV align=center><img height="211" width="329" src="common/error.gif" >
       <TABLE cellSpacing=0 cellPadding=0 width="80%" border=0>
         <TBODY>
         <TR>
-          <TD><FONT class=p2>&nbsp;&nbsp;&nbsp; 出错的原因是：</FONT></TD></TR>
+          <TD><div class=p2>出错的原因是：</div></TD>
+        </TR>
         <TR>
           <TD height=8></TD>
+        </TR>
         <TR>
           <TD>
             <P>
-			<FONT color=#ff0000><IMG 
-            height=13 src="common/emessage.gif" 
-            width=12>&nbsp;${error}</FONT>            
-      　</P></TD></TR></TBODY></TABLE></DIV></TD></TR>
+            <div style="color:#ff0000"><img height=13 src="common/emessage.gif" width=12>&nbsp;${error}</div>
+      　     </P>
+          </TD>
+        </TR>
+        </TBODY>
+      </TABLE>
+      </DIV>
+    </TD>
+  </TR>
   <TR>
     <TD height=5></TD>
+  </TR>
   <TR>
     <TD align=middle>
-      <CENTER>
+      <div align="center">
       <TABLE cellSpacing=0 cellPadding=0 width=480 border=0>
         <TBODY>
         <TR>
-          <TD width=6><IMG height=26 src="common/left.gif" 
-width=7></TD>
+          <TD width=6><img height=26 src="common/left.gif" width=7></TD>
           <TD background="common/bg.gif">
-            <DIV align=center><FONT class=p6>
-            <A href="javascript:history.go(-1)">返回上一页</A></FONT> </DIV></TD>
-          <TD width=7><IMG 
-      src="common/right.gif"></TD></TR></TBODY></TABLE></CENTER></TD></TR></TBODY></TABLE>
+            <!--<DIV align=center><FONT class=p6><A href="javascript:history.go(-1)">返回上一页</A></FONT></DIV>-->
+            <div style="text-align: center" class="p6"><A href="javascript:history.go(-1)">返回上一页</A></div>
+          </TD>
+          <TD width=7><img src="common/right.gif"></TD>
+        </TR>
+        </TBODY>
+      </TABLE>
+      </div>
+    </TD>
+  </TR>
+  </TBODY>
+</TABLE>
 </body>
 </html>

@@ -101,26 +101,26 @@ fieldset div {
 <div id="formwrapper">
 	<h3>编辑网站文章</h3>
 	<form action="AddArticleServlet" method="post">
-	<fieldset>
-		<legend>文章基本信息</legend>
-		<div>
-			<label for="title">文章标题</label>
-			<input type="text" name="title" id="title" value="" size="60" maxlength="200" /> 
-			*(最多200个字符)<br />	
-		</div>
-		<div>
-			<label for="source">文章来源</label>
-			<input type="text" name="source" id="source" value="" size="30" maxlength="100" /> 
-			*(最多100个字符)<br />	
-		</div>
-		<div>
-			<label for="content">文章内容</label>
-			<textarea rows="20" cols="100" name="content" id="content"></textarea>
-			<br />	
-		</div>
-		<div class="enter">
-		    <input name="submit" type="submit" class="buttom" value="提交" />
-		    <input name="reset" type="reset" class="buttom" value="重置" />
+		<fieldset>
+			<legend>文章基本信息</legend>
+			<div>
+				<label for="title">文章标题</label>
+				<input type="text" name="title" id="title" value="" size="60" maxlength="200" />
+				*(最多200个字符)<br />
+			</div>
+			<div>
+				<label for="source">文章来源</label>
+				<input type="text" name="source" id="source" value="" size="30" maxlength="100" />
+				*(最多100个字符)<br />
+			</div>
+			<div>
+				<label for="content">文章内容</label>
+				<textarea rows="20" cols="100" name="content" id="content"></textarea>
+				<br />
+			</div>
+			<div class="enter">
+				<input name="submit" type="submit" class="buttom" value="提交" />
+				<input name="reset" type="reset" class="buttom" value="重置" />
 		    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ArticleSearchServlet'"/>
 		</div>
 	</fieldset>

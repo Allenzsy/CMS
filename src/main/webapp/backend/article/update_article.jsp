@@ -10,7 +10,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <head>
 	<base href="<%=basePath%>">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>添加文章</title>
+	<title>编辑文章</title>
 <style type="text/css">
 <!--
 body {
@@ -99,11 +99,33 @@ fieldset div {
 </head>
 <body>
 <div id="formwrapper">
-	<h3>添加文章成功</h3>
-	<div class="enter">
-	    <input name="addArticle" type="button" class="buttom" value="继续添加文章" onclick="window.location = 'article/add_article.jsp'"/>
-	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ArticleSearchServlet'"/>
-	</div>
+	<h3>编辑网站文章</h3>
+	<form action="UpdateArticleServlet" method="post"> <!-- 由于id还要传过去，但是又不想让用户看到，所以使用隐藏域 -->
+		<input type="hidden" name="id" value="${updateArticle.id}">
+		<fieldset>
+			<legend>文章基本信息</legend>
+			<div>
+				<label for="title">文章标题</label>
+				<input type="text" name="title" id="title" value="${updateArticle.title}" size="60" maxlength="200" />
+				*(最多200个字符)<br />
+			</div>
+			<div>
+				<label for="source">文章来源</label>
+				<input type="text" name="source" id="source" value="${updateArticle.source}" size="30" maxlength="100" />
+				*(最多100个字符)<br />
+			</div>
+			<div>
+				<label for="content">文章内容</label>
+				<textarea rows="20" cols="100" name="content" id="content">${updateArticle.content}</textarea> <!--多行文本区域没有value=，直接放在textarea中间就可以-->
+				<br />
+			</div>
+			<div class="enter">
+				<input name="submit" type="submit" class="buttom" value="提交" />
+				<input name="reset" type="reset" class="buttom" value="重置" />
+		    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ArticleSearchServlet'"/>
+		</div>
+	</fieldset>
+	</form>
 </div>
 
 </body>

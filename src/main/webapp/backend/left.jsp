@@ -73,7 +73,7 @@ body {
     <li> <a class="head">文章管理</a>
       <ul>
         <li><a href="ArticleSearchServlet" target="rightFrame">查询文章</a></li>
-        <li><a href="#" target="rightFrame">添加文章</a></li>
+        <li><a href="AddArticleServlet" target="rightFrame">添加文章</a></li>
         <li><a href="#" target="rightFrame">留言管理</a></li>
       </ul>
     </li>
