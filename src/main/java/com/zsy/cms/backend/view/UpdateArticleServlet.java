@@ -18,6 +18,7 @@ public class UpdateArticleServlet extends HttpServlet {
     // 由于在更新文章的jsp页面编辑完成后，需要点击更新按钮将更新内容以表单形式提交到 UpdateArticleServlet上，所以只实现doPost方法
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        request.setCharacterEncoding("UTF-8");
         // 根据提交内容，获取信息
         String id = request.getParameter("id");
         if(id == null) {

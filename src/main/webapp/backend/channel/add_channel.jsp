@@ -99,11 +99,27 @@ fieldset div {
 </head>
 <body>
 <div id="formwrapper">
-	<h3>添加文章成功</h3>
-	<div class="enter">
-	    <input name="addArticle" type="button" class="buttom" value="继续添加文章" onclick="window.location = 'article/add_article.jsp'"/>
-	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'SearchArticleServlet'"/>
-	</div>
+	<h3>编辑网站频道</h3>
+	<form action="AddChannelServlet" method="post">
+		<fieldset>
+			<legend>频道基本信息</legend>
+			<div>
+				<label for="channelName">频道名称</label>
+				<input type="text" name="channelName" id="channelName" value="" size="60" maxlength="200" />
+				*(最多200个字符)<br />
+			</div>
+			<div>
+				<label for="description">频道描述</label>
+				<textarea rows="20" cols="100" name="description" id="description"></textarea>
+				<br />
+			</div>
+			<div class="enter">
+				<input name="submit" type="submit" class="buttom" value="提交" />
+				<input name="reset" type="reset" class="buttom" value="重置" />
+		    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'SearchChannelServlet'"/>
+		</div>
+	</fieldset>
+	</form>
 </div>
 
 </body>

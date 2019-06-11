@@ -72,15 +72,15 @@ body {
   <ul id="navigation">
     <li> <a class="head">文章管理</a>
       <ul>
-        <li><a href="ArticleSearchServlet" target="rightFrame">查询文章</a></li>
-        <li><a href="AddArticleServlet" target="rightFrame">添加文章</a></li>
+        <li><a href="SearchArticleServlet" target="rightFrame">查询文章</a></li>
+        <li><a href="article/add_article.jsp" target="rightFrame">添加文章</a></li>
         <li><a href="#" target="rightFrame">留言管理</a></li>
       </ul>
     </li>
     <li> <a class="head">频道管理</a>
       <ul>
-        <li><a href="#" target="rightFrame">查询频道</a></li>
-        <li><a href="#" target="rightFrame">添加频道</a></li>
+        <li><a href="SearchChannelServlet" target="rightFrame">查询频道</a></li>
+        <li><a href="channel/add_channel.jsp" target="rightFrame">添加频道</a></li>
       </ul>
     </li>
     <li> <a class="head">爬虫管理</a>

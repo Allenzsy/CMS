@@ -60,12 +60,12 @@
     </servlet-mapping>
     
     <servlet>
-        <servlet-name>ArticleSearchServlet</servlet-name>
-        <servlet-class>com.zsy.cms.backend.view.ArticleSearchServlet</servlet-class>
+        <servlet-name>SearchArticleServlet</servlet-name>
+        <servlet-class>com.zsy.cms.backend.view.SearchArticleServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ArticleSearchServlet</servlet-name>
-        <url-pattern>/backend/ArticleSearchServlet</url-pattern>
+        <servlet-name>SearchArticleServlet</servlet-name>
+        <url-pattern>/backend/SearchArticleServlet</url-pattern>
     </servlet-mapping>
 
     <filter>

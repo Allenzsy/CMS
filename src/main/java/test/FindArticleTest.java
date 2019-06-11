@@ -1,3 +1,5 @@
+package test;
+
 import com.zsy.cms.utils.DBUtil;
 
 import java.sql.*;

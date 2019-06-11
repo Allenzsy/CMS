@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ArticleSearchServlet extends HttpServlet {
+public class SearchArticleServlet extends HttpServlet {
     // 点击查询文章，是只有doGet方法
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

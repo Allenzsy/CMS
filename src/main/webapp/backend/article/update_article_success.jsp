@@ -101,7 +101,7 @@ fieldset div {
 <div id="formwrapper">
 	<h3>编辑文章成功</h3>
 	<div class="enter">
-	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ArticleSearchServlet'"/>
+	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'SearchArticleServlet'"/>
 	</div>
 </div>
 

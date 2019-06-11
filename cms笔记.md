@@ -1,12 +1,12 @@
-## CMS
+# CMS
 
-### login 中的 checkcode
+## login 中的 checkcode
 
 第一步：
 
 打开登录页面，显示验证码
 
-![](G:\javaTest\IdeaProjects\CMS\temp\checkcode.JPG)
+![img](G:\javaTest\IdeaProjects\CMS\temp\checkcode.JPG)
 
 浏览器通过 *get* 方法来递交请求，所以 servlet 可以只实现 `doGet` 方法。然后servlet 通过流将图片返回到 response 中。
 
@@ -48,3 +48,13 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 ### 登出
 
 清除session中所有参数。
+
+
+
+### 添加文章
+
+
+
+## 编辑文章
+
+<center>![img](G:\javaTest\IdeaProjects\CMS\temp\编辑文章流程.JPG)</center>

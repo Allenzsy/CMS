@@ -10,14 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@WebServlet("/backend/DelArticleServlet")
-public class DelArticleServlet extends HttpServlet {
+@WebServlet("/backend/DelChannelServlet")
+public class DelChannelServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         // 拿到唯一标识 这里修改为可以批量删除，拿到所以参数名为id的参数值""
         String[] ids = request.getParameterValues("id");
         if(ids == null) {
@@ -30,7 +28,7 @@ public class DelArticleServlet extends HttpServlet {
         PreparedStatement pstmt = null;
         try {
             for(String id : ids) {
-                pstmt = conn.prepareStatement("delete from t_article where id = ?");
+                pstmt = conn.prepareStatement("delete from t_channel where id = ?");
                 pstmt.setInt(1, Integer.parseInt(id));
                 pstmt.executeUpdate();
                 conn.commit();
@@ -44,7 +42,7 @@ public class DelArticleServlet extends HttpServlet {
         }
 
         // 如果正确forward到SearchArticleServlet（这里不能直接forward到article_list.jsp，因为这样页面中不会有数据）
-        request.getRequestDispatcher("/backend/SearchArticleServlet").forward(request, response);
+        request.getRequestDispatcher("/backend/SearchChannelServlet").forward(request, response);
         return;
     }
 }
