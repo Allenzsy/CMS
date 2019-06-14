@@ -25,14 +25,32 @@ public class SearchArticleServlet extends HttpServlet {
         // 所以，这里应该自己设计一个类，用来完成每条数据存储。
         ArrayList<Article> list = new ArrayList<>();
 
+        int offset = 0;
+        int pageSize = 5;
+        // 希望从requset中获取offset， 从session中获取pageSize
+        try {
+            offset = Integer.parseInt(req.getParameter("offset"));
+        } catch (Exception ignore) { }
+
+
+
         // 查寻数据库
         Connection conn = DBUtil.getConn();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        PreparedStatement pstmtForTotal = null;
+        ResultSet rsForTotal = null;
+        int total = 0;
         try {
-            pstmt = conn.prepareStatement("select * from t_article");
+            pstmtForTotal = conn.prepareStatement("select count(*) from t_article");
+            rsForTotal = pstmtForTotal.executeQuery();
+            if(rsForTotal.next()) {
+                total = rsForTotal.getInt(1);
+            }
+            pstmt = conn.prepareStatement("select * from t_article limit ?,?");
+            pstmt.setInt(1, offset);
+            pstmt.setInt(2, pageSize);
             rs = pstmt.executeQuery();
-            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
             while(rs.next()) {
                 Article a = new Article();
                 a.setId(rs.getInt("id"));
@@ -48,9 +66,23 @@ public class SearchArticleServlet extends HttpServlet {
         } finally {
             DBUtil.close(rs);
             DBUtil.close(pstmt);
+            DBUtil.close(rsForTotal);
+            DBUtil.close(pstmtForTotal);
             DBUtil.close(conn);
         }
+        // 将查询到的文章传递给jsp
         req.setAttribute("articles", list);
+        // 将总记录数传递给jsp
+        req.setAttribute("total", total);
+        // 当前是第几页
+        int currentPage = offset / pageSize + 1;
+        req.setAttribute("currentPage", currentPage);
+        // 一共有多少页
+        int maxPage = total / pageSize;
+        if((total % pageSize) > 0) {
+            maxPage++;
+        }
+        req.setAttribute("maxPage", maxPage);
 
         // forward到article_list.jsp
         req.getRequestDispatcher("/backend/article/article_list.jsp").forward(req, resp);

@@ -180,12 +180,25 @@ td {
     <td height="30">
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
       <tr>
-        <td width="33%"><div align="left"><span class="STYLE22">&nbsp;&nbsp;&nbsp;&nbsp;共有<strong> 243</strong> 条记录，当前第<strong> 1</strong> 页，共 <strong>10</strong> 页</span></div></td>
+        <td width="33%">
+            <div align="left">
+                <span class="STYLE22">&nbsp;&nbsp;&nbsp;&nbsp;共有<strong>${total}</strong> 条记录，
+                    当前第<strong>${currentPage}</strong> 页，
+                    共 <strong>${maxPage}</strong> 页
+                </span>
+            </div>
+        </td>
         <td width="67%" align=right vAlign="center" noWrap>
 				<a href="#">首页</a>
-				<font color="red">1</font>
-				<a href="#">2</a>
-				<a href="#">3</a>
+                <a href="#">上页</a>
+                <c:forEach begin="1" end="${maxPage}" var="i">
+                    <c:if test="${currentPage eq i}">
+                        <span style="color: red">${i}</span>
+                    </c:if>
+                    <c:if test="${currentPage ne i}">
+                        <a href="#">${i}</a>
+                    </c:if>
+                </c:forEach>
 				<a href="#">下页</a>
 				<a href="#">尾页</a>
 				<select name="pagesize" onchange="selectPagesize(this)" >
