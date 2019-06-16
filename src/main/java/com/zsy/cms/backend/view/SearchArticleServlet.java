@@ -27,14 +27,28 @@ public class SearchArticleServlet extends HttpServlet {
 
         int offset = 0;
         int pageSize = 5;
-        // 希望从requset中获取offset， 从session中获取pageSize
+        // 希望从requset中获取offset， 从session中获取pageSize，session中如果没有那么则设置缺省值
         try {
             offset = Integer.parseInt(req.getParameter("offset"));
         } catch (Exception ignore) { }
-
-
+        // 如果从request中拿到了pageSize的值，那么需要更新Session中的PageSize的值
+        if(req.getParameter("pageSize") != null) {
+            req.getSession().setAttribute("pageSize", Integer.parseInt(req.getParameter("pageSize")));
+        }
+        Integer ps = (Integer) req.getSession().getAttribute("pageSize");
+        if(ps == null) {
+            req.getSession().setAttribute("pageSize", pageSize);
+        } else {
+            pageSize = ps;
+        }
 
         // 查寻数据库
+        String sql = "select * from t_article limit ?,?";
+        String sqlForTotal = "select count(*) from t_article";
+        if(req.getParameter("title") != null) {
+            sql = "select * from t_article where title like '%"+req.getParameter("title")+"%' limit ?,?";;
+            sqlForTotal = "select count(*) from t_article where title like '%"+req.getParameter("title")+"%'";
+        }
         Connection conn = DBUtil.getConn();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -42,12 +56,12 @@ public class SearchArticleServlet extends HttpServlet {
         ResultSet rsForTotal = null;
         int total = 0;
         try {
-            pstmtForTotal = conn.prepareStatement("select count(*) from t_article");
+            pstmtForTotal = conn.prepareStatement(sqlForTotal);
             rsForTotal = pstmtForTotal.executeQuery();
             if(rsForTotal.next()) {
                 total = rsForTotal.getInt(1);
             }
-            pstmt = conn.prepareStatement("select * from t_article limit ?,?");
+            pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, offset);
             pstmt.setInt(2, pageSize);
             rs = pstmt.executeQuery();
@@ -86,6 +100,11 @@ public class SearchArticleServlet extends HttpServlet {
 
         // forward到article_list.jsp
         req.getRequestDispatcher("/backend/article/article_list.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
     }
 }
 
