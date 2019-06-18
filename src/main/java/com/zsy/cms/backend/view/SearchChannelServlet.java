@@ -1,8 +1,11 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ChannelDao;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PageVO;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,34 +25,39 @@ public class SearchChannelServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        // 获取数据库中的channel，并包装成channel对象
-        ArrayList<Channel> list = new ArrayList<>();
-
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
+        int offset = 0;
+        int pageSize = 5;
+        // 希望从requset中获取offset， 从session中获取pageSize，session中如果没有那么则设置缺省值
         try {
-            pstmt = conn.prepareStatement("select * from t_channel");
-            rs = pstmt.executeQuery();
-            while(rs.next()) {
-                Channel c = new Channel();
-                c.setId(rs.getInt("id"));
-                c.setName(rs.getString("name"));
-                c.setDescription(rs.getString("description"));
-                list.add(c);
-            }
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBUtil.close(rs);
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
+            offset = Integer.parseInt(request.getParameter("pager.offset"));
+        } catch (Exception ignore) { }
+        // 如果从request中拿到了pageSize的值，那么需要更新Session中的PageSize的值
+        if(request.getParameter("pageSize") != null) {
+            request.getSession().setAttribute("pageSize", Integer.parseInt(request.getParameter("pageSize")));
         }
+        Integer ps = (Integer) request.getSession().getAttribute("pageSize");
+        if(ps == null) {
+            request.getSession().setAttribute("pageSize", pageSize);
+        } else {
+            pageSize = ps;
+        }
+        String name = request.getParameter("name");
+
+
+        ChannelDao channelDao = new PropertiesBeanFactory().getChannelDao();
+        PageVO<Channel> pv = channelDao.searchChannel(offset, pageSize, name);
+
+
         // 放入容器中，并在request中利用setAtrribute放入request中
-        request.setAttribute("channels", list);
+        request.setAttribute("channels", pv.getDatas());
+        request.setAttribute("total", pv.getTotal());
 
         // forward 到 channel_list.jsp
         request.getRequestDispatcher("/backend/channel/channel_list.jsp").forward(request, response);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req, resp);
+    }
 }

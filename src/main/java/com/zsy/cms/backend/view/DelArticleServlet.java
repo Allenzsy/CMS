@@ -3,6 +3,7 @@ package com.zsy.cms.backend.view;
 import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,7 +31,7 @@ public class DelArticleServlet extends HttpServlet {
             return;
         }
 
-        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();
         articleDao.delArticle(ids);
 
         // 如果正确forward到SearchArticleServlet（这里不能直接forward到article_list.jsp，因为这样页面中不会有数据）

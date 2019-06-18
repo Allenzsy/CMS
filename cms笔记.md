@@ -58,3 +58,19 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 ## 编辑文章
 
 <center>![img](G:\javaTest\IdeaProjects\CMS\temp\编辑文章流程.JPG)</center>
+
+
+
+
+
+将数据库操作逻辑封装到DAO中，首先实现DAO接口，然后对接口进行相应实现。使得具体的servlet不依赖于具体代码的实现。
+
+利用抽象工厂设计模式，及使用配置文件来避免因为变化所产生的影响
+
+DAO对象不包含状态，只是纯粹的操作，即使多个线程同时访问同一个DAO对象，也完全没有问题，
+所以，没有必要每次访问DAO，都创建一个DAO对象。因此，在PropertiesBeanFactory中初始化所有的bean，每次getBean，只是直接返回一个已经初始化好的对象即可！
+
+
+
+那么如果把PropertiesBeanFactory设计成单例模式，就可以多个Servlet共用一个DAO，但是实现的思路可以不仅仅是将PropertiesBeanFactory这个类设计成单例模式，而是找一个统一的位置，在tomcat启动时就初始化DAO在之后供Servlet使用
+

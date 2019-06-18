@@ -1,6 +1,9 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ChannelDao;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,23 +26,13 @@ public class AddChannelServlet extends HttpServlet {
         // 拿到响应信息
         String name = request.getParameter("channelName");
         String description = request.getParameter("description");
-        // 在数据库中插入数据
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = conn.prepareStatement("insert into t_channel(name, description) values(?,?)");
-            pstmt.setString(1, name);
-            pstmt.setString(2,description);
 
-            pstmt.executeUpdate();
-            conn.commit();
-        }catch (SQLException e) {
-            e.printStackTrace();
-            DBUtil.rollBack(conn);
-        } finally {
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+        Channel c = new Channel();
+        c.setName(name);
+        c.setName(description);
+
+        ChannelDao channelDao = new PropertiesBeanFactory().getChannelDao();
+        channelDao.addChannel(c);
 
         // 然后 forward 到添加频道成功页面
         request.getRequestDispatcher("/backend/channel/add_channel_success.jsp").forward(request, response);

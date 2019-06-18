@@ -1,8 +1,10 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ChannelDao;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -28,31 +30,9 @@ public class OpenUpdateChannelServlet extends HttpServlet {
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
-        // 通过 id 在数据库中查询相应数据， 并包装成channel对象
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Channel c = null;
-        try {
-            pstmt = conn.prepareStatement("select * from t_channel where id=?");
-            pstmt.setInt(1,Integer.parseInt(id));
-            rs = pstmt.executeQuery();
-            if(!rs.next()) {
-                request.setAttribute("error", "不存在id为"+id+"的频道，无法编辑");
-                request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
-                return;
-            }
-            c = new Channel();
-            c.setId(rs.getInt("id"));
-            c.setName(rs.getString("name"));
-            c.setDescription(rs.getString("description"));
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBUtil.close(rs);
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+
+        ChannelDao channelDao = new PropertiesBeanFactory().getChannelDao();
+        Channel c = channelDao.findChannelById(id, request, response);
 
         // forward 到 Update_channel.jsp
         request.setAttribute("channel", c);

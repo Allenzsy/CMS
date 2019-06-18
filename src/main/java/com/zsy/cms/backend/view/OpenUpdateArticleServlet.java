@@ -4,6 +4,7 @@ import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,7 +30,7 @@ public class OpenUpdateArticleServlet extends HttpServlet {
             return;
         }
 
-        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();
         Article a = articleDao.findArticleById(id, request, response);
 
         // forward 到更新的jsp页面

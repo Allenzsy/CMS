@@ -4,6 +4,7 @@ import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,7 +32,7 @@ public class AddArticleServlet extends HttpServlet {
         a.setContent(content);
         a.setSource(source);
 
-        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();
         articleDao.addArticle(a);
 
         // 显示文章添加成功页面

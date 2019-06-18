@@ -1,6 +1,9 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ChannelDao;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 import sun.security.pkcs11.Secmod;
 
 import javax.servlet.ServletException;
@@ -21,25 +24,14 @@ public class UpdateChannelServlet extends HttpServlet {
         String id = request.getParameter("id");
         String name = request.getParameter("channelName");
         String description = request.getParameter("description");
-        // 根据id更新相应数据库中的数据
-        Connection conn= DBUtil.getConn();
-        PreparedStatement pstmt = null;
 
-        try {
-            pstmt = conn.prepareStatement("update t_channel set name=?, description=? where id=?");
-            pstmt.setString(1,name);
-            pstmt.setString(2,description);
-            pstmt.setInt(3, Integer.parseInt(id));
+        Channel c = new Channel();
+        c.setName(name);
+        c.setDescription(description);
+        c.setId(Integer.parseInt(id));
 
-            pstmt.executeUpdate();
-            conn.commit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            DBUtil.rollBack(conn);
-        } finally {
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+        ChannelDao channelDao = new PropertiesBeanFactory().getChannelDao();
+        channelDao.updateChannel(c);
 
 
         // 更新成功 forward 到update_channel_success.jsp

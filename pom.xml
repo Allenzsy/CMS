@@ -22,7 +22,7 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
             <!--在容器中运行时使用容器的依赖包-->
-            <scope>provided</scope>
+<!--            <scope>provided</scope>-->
         </dependency>
         <!--JSP核心包-->
         <dependency>
@@ -42,7 +42,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.15</version>
-            <!--<scope>provided</scope>-->
         </dependency>
 
 <!--        &lt;!&ndash; https://mvnrepository.com/artifact/jsptags/pager-taglib &ndash;&gt;-->
@@ -54,6 +53,9 @@
 
 
     </dependencies>
+
+
+
 
     <build>
         <!--打包后包的名字-->
@@ -72,6 +74,25 @@
         </plugins>
         <!--执行构建时默认的goal，这里为编译-->
         <defaultGoal>compile</defaultGoal>
+
+<!--        <resources>-->
+<!--            <resource>-->
+<!--                <directory>src/main/resources</directory>-->
+<!--                <includes>-->
+<!--                    <include>**/*.properties</include>-->
+<!--                    <include>**/*.xml</include>-->
+<!--                    <include>**/*.tld</include>-->
+<!--                </includes>-->
+<!--                <filtering>false</filtering>-->
+<!--            </resource>-->
+<!--            <resource>-->
+<!--                <directory>src/main/java</directory>-->
+<!--                <excludes>-->
+<!--                    <exclude>**/*.java</exclude>-->
+<!--                </excludes>-->
+<!--            </resource>-->
+<!--        </resources>-->
+
     </build>
 
 </project>

@@ -1,6 +1,8 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ChannelDao;
 import com.zsy.cms.utils.DBUtil;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,23 +25,9 @@ public class DelChannelServlet extends HttpServlet {
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
-        // 连接数据库删除文章
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        try {
-            for(String id : ids) {
-                pstmt = conn.prepareStatement("delete from t_channel where id = ?");
-                pstmt.setInt(1, Integer.parseInt(id));
-                pstmt.executeUpdate();
-                conn.commit();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            DBUtil.rollBack(conn);
-        } finally {
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+
+        ChannelDao channelDao = new PropertiesBeanFactory().getChannelDao();
+        channelDao.delChannel(ids);
 
         // 如果正确forward到SearchArticleServlet（这里不能直接forward到article_list.jsp，因为这样页面中不会有数据）
         request.getRequestDispatcher("/backend/SearchChannelServlet").forward(request, response);

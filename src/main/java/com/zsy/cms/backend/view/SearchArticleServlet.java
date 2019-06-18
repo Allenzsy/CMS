@@ -5,6 +5,7 @@ import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.utils.DBUtil;
 import com.zsy.cms.utils.PageVO;
+import com.zsy.cms.utils.PropertiesBeanFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -42,7 +43,7 @@ public class SearchArticleServlet extends HttpServlet {
         }
 
         String title = req.getParameter("title");
-        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();//new ArticleDaoImpleForSQL();
         PageVO<Article> pv = articleDao.searchArticle(offset, pageSize, title);
 
         // 将查询到的文章传递给jsp
