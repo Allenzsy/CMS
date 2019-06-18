@@ -1,5 +1,7 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ArticleDao;
+import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.utils.DBUtil;
 
@@ -26,34 +28,10 @@ public class OpenUpdateArticleServlet extends HttpServlet {
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
-        // 进行数据库查询，并通过setAttribute放到request中
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        Article a = null;
-        try {
-            pstmt = conn.prepareStatement("select * from t_article where id=?");
-            pstmt.setInt(1,Integer.parseInt(id));
-            rs = pstmt.executeQuery();
-            SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
-            if(!rs.next()) {
-                request.setAttribute("error", "不存在为"+id+"的文章，无法编辑");
-                request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
-                return;
-            }
-            a = new Article();
-            a.setId(rs.getInt("id"));
-            a.setTitle(rs.getString("title"));
-            a.setContent(rs.getString("content"));
-            a.setSource(rs.getString("source"));
-            a.setCreateTime(rs.getTimestamp("createtime"));
-        }catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            DBUtil.close(rs);
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+
+        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        Article a = articleDao.findArticleById(id, request, response);
+
         // forward 到更新的jsp页面
         request.setAttribute("updateArticle", a);
         request.getRequestDispatcher("/backend/article/update_article.jsp").forward(request, response);

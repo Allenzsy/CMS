@@ -1,5 +1,7 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.backend.dao.ArticleDao;
+import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.utils.DBUtil;
 
@@ -18,35 +20,26 @@ public class UpdateArticleServlet extends HttpServlet {
     // 由于在更新文章的jsp页面编辑完成后，需要点击更新按钮将更新内容以表单形式提交到 UpdateArticleServlet上，所以只实现doPost方法
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
         // 根据提交内容，获取信息
         String id = request.getParameter("id");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String source = request.getParameter("source");
+
         if(id == null) {
             request.setAttribute("error", "删除错误，id不能为空");
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
-        // 根据id，通过update等数据库操作更新数据库。
-        Connection conn = DBUtil.getConn();
-        PreparedStatement pstmt = null;
-        try {
-            pstmt = conn.prepareStatement("update t_article set title=?, content=?, source=?, updatetime=? where id = ?");
-            pstmt.setString(1, request.getParameter("title"));
-            pstmt.setString(2, request.getParameter("content"));
-            pstmt.setString(3, request.getParameter("source"));
-            pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-            pstmt.setInt(5, Integer.parseInt(id));
 
-            pstmt.executeUpdate();
-            conn.commit();
+        Article a = new Article();
+        a.setId(Integer.parseInt(id));
+        a.setTitle(title);
+        a.setContent(content);
+        a.setSource(source);
 
-        }catch (SQLException e) {
-            e.printStackTrace();
-            DBUtil.rollBack(conn);
-        } finally {
-            DBUtil.close(pstmt);
-            DBUtil.close(conn);
-        }
+        ArticleDao articleDao = new ArticleDaoImpleForSQL();
+        articleDao.updateArticle(a);
 
         // 更新成功forward到更新成功页面
         request.getRequestDispatcher("/backend/article/update_article_success.jsp").forward(request, response);

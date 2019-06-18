@@ -17,7 +17,6 @@ import java.sql.SQLException;
 public class UpdateChannelServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
         // 根据update_channel.jsp中点击提交按钮，通过doPost方式提交到UpdateChannelServlet
         String id = request.getParameter("id");
         String name = request.getParameter("channelName");

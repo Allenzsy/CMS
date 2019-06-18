@@ -18,7 +18,6 @@ public class AddChannelServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        request.setCharacterEncoding("UTF-8");
         // 在 channel_list.jsp 中，点击添加操作，然后跳转到add_channel.jsp，在其中将内容填好，
         // 点击提交，通过 doPost 方法，转到AddChannelServlet
         // 拿到响应信息

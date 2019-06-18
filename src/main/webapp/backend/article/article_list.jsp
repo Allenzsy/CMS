@@ -106,9 +106,6 @@ td {
             // window.location 相当于执行get
             window.location = url;
         }
-        function selectPagesize(field) {
-            window.location = "SearchArticleServlet?pageSize="+field.value+"&title=${param.title}";
-        }
 
     </script>
 </head>
@@ -170,7 +167,7 @@ td {
             <td height="20" bgcolor="#FFFFFF"><div align="center">
               <input type="checkbox" name="id" value="${a.id}" /> <!-- 在标签中 id是唯一的，name可以是重复的-->
             </div></td>
-            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="#" title="点击查看和编辑文章">${a.title}</a></div></td>
+            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="OpenUpdateArticleServlet?id=${a.id}" title="点击查看和编辑文章">${a.title}</a></div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.source}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">20</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">5</div></td>
@@ -192,43 +189,14 @@ td {
         </c:if>
     </table></td>
   </tr>
-  <tr>
-    <td height="30">
-    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-      <tr>
-        <td width="33%">
-            <div align="left">
-                <span class="STYLE22">&nbsp;&nbsp;&nbsp;&nbsp;共有<strong>${total}</strong> 条记录，
-                    当前第<strong>${currentPage}</strong> 页，
-                    共 <strong>${maxPage}</strong> 页
-                </span>
-            </div>
+    <tr>
+        <td height="30">
+            <jsp:include page="/backend/common/pager.jsp">
+                <jsp:param name="url" value="SearchArticleServlet"/>
+                <jsp:param name="params" value="title"/>
+            </jsp:include>
         </td>
-        <td width="67%" align=right vAlign="center" noWrap>
-				<a href="SearchArticleServlet?offset=0&title=${param.title}">首页</a>
-                <a href="SearchArticleServlet?offset=${((currentPage-2)<0?0:(currentPage-2))*pageSize}&title=${param.title}">上页</a>
-                <c:forEach begin="1" end="${maxPage}" var="i">
-                    <c:if test="${currentPage eq i}">
-                        <span style="color: red">${i}</span>
-                    </c:if>
-                    <c:if test="${currentPage ne i}">
-                        <a href="SearchArticleServlet?offset=${(i-1)*pageSize}&title=${param.title}">${i}</a>
-                    </c:if>
-                </c:forEach>
-				<a href="SearchArticleServlet?offset=${((currentPage)>=maxPage?maxPage-1:(currentPage))*pageSize}&title=${param.title}">下页</a>
-				<a href="SearchArticleServlet?offset=${(maxPage-1)*pageSize}&title=${param.title}">尾页</a>
-				<select name="pageSize" onchange="selectPagesize(this)" >
-
-	<c:forEach begin="5" end="50" step="5" var="i">
-        <option value="${i}" <c:if test="${pageSize == i}">selected</c:if>> ${i}</option>
-    </c:forEach>
-
-</select>
-
-      </td>
-      </tr>
-    </table></td>
-  </tr>
+    </tr>
 </table>
 </body>
 </html>
