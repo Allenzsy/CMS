@@ -20,7 +20,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class SearchArticleServlet extends HttpServlet {
+public class SearchArticleServlet extends BaseServlet {
+
+    ArticleDao articleDao;
+
     // 点击查询文章，是只有doGet方法
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -41,9 +44,10 @@ public class SearchArticleServlet extends HttpServlet {
         } else {
             pageSize = ps;
         }
-
         String title = req.getParameter("title");
-        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();//new ArticleDaoImpleForSQL();
+//
+//        ArticleDao articleDao = new PropertiesBeanFactory().getArticleDao();//new ArticleDaoImpleForSQL();
+//
         PageVO<Article> pv = articleDao.searchArticle(offset, pageSize, title);
 
         // 将查询到的文章传递给jsp
@@ -58,6 +62,10 @@ public class SearchArticleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         this.doGet(req,resp);
+    }
+
+    public void setArticleDao(ArticleDao articleDao) {
+        this.articleDao = articleDao;
     }
 }
 

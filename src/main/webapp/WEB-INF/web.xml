@@ -68,6 +68,17 @@
         <url-pattern>/backend/SearchArticleServlet</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>InitBeanFactoryServlet</servlet-name>
+        <servlet-class>com.zsy.cms.backend.view.InitBeanFactoryServlet</servlet-class>
+        <init-param>
+            <param-name>daoConfig</param-name>
+            <param-value>factory.properties</param-value>
+        </init-param>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+
+
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>com.zsy.cms.backend.view.EncodingFilter</filter-class>
@@ -89,7 +100,6 @@
             <param-value>.*Servlet|.*\.jsp</param-value>
         </init-param>
     </filter>
-
     <filter-mapping>
         <filter-name>LoginFilter</filter-name>
         <url-pattern>/backend/*</url-pattern>

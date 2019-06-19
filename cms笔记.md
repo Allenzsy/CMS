@@ -72,5 +72,33 @@ DAO对象不包含状态，只是纯粹的操作，即使多个线程同时访�
 
 
 
-那么如果把PropertiesBeanFactory设计成单例模式，就可以多个Servlet共用一个DAO，但是实现的思路可以不仅仅是将PropertiesBeanFactory这个类设计成单例模式，而是找一个统一的位置，在tomcat启动时就初始化DAO在之后供Servlet使用
+那么如果把PropertiesBeanFactory设计成单例模式，就可以多个Servlet共用一个DAO，但是实现的思路可以不仅仅是将PropertiesBeanFactory这个类设计成单例模式，因为单例模式实际上又使得DAO依赖于具体的实现，因为我可以从properties来创建，也可以通过xml文件来创建，我们希望获取DAO对象的时候应该只看得到BeanFactory，至于使用哪种配置文件，则去到一个统一的位置去配置好。这样的实现有很多种，那么这里采用Servlet的<load-on-startup>，在tomcat启动时就初始化DAO在之后供Servlet使用
+
+完成PropertiesBeanFactory只创建后，我们发现再具体的Servelt使用时仍需
+
+```java
+BeanFactory factory = (BeanFactory) request.getServletContext().getAttribute(InitBeanFactoryServlet.DAO_FACTORY);
+ArticleDao articleDao = (ArticleDao) factory.getBean("ArticleDao");
+articleDao.addArticle(a);
+```
+
+那么实际上在servlet中，我们仍需要自己去拿需要的Dao，那么可不可以直接用呢，在Servlet中声明属性ArticleDao就可以直接使用呢？答案是使用DI注入
+
+利用DI（Dependency Injection） - 依赖注入，将Servlet的依赖关系注入到Servlet中！实现的手段则是通过HttpServlet中的Service方法，这个方法是当HTTP请求到达servlet 时候首先调用的，简单理解就是决定了调用servlet的doGet还是doPost等等。
+
+现在我们的Servlet都是直接继承HttpServlet，而我们需要的是Http请求在到达对应的Servlet之前将所有的Dao送到Servlet那里，所以我们再写一个BaseServlet类它继承HttpSetvlet并重写service方法，然后其他Servlet再继承BaseServlet，这样就可以实现提前将Servlet 中需要的Dao送到Servlet的效果。
+
+那么，如何重写service方法才能实现这个效果呢？也就是说，如何在BaseServlet的service方法中，知道是哪个对象调用了service方法以及设置这个对象中的一些属性呢？这就自然想到了反射机制！
+
+```java
+public class BaseServlet extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(this);//这里的this是多态的，也就是说后面继承BaseServlet的类，在HTTP到达的
+        super.service(req, resp);//时候会调用servce方法，那么这是this的运行时类型是继承的类型。
+    }
+}
+```
+
+
 
