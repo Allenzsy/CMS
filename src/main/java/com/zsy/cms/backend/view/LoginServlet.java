@@ -30,7 +30,7 @@ public class LoginServlet extends BaseServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
-
+        super.init(config);
         width = Integer.parseInt(config.getInitParameter("width"));
         height = Integer.parseInt(config.getInitParameter("height"));
         number = Integer.parseInt(config.getInitParameter("number"));

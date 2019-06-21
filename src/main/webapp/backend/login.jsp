@@ -15,7 +15,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript" src="js/js.js"></script>
   <script type="text/javascript">
     function reloadcode(img) {
-      img.src = "LoginServlet?"+Math.random()+"&method=checkcode";
+      img.src = "LoginServlet?method=checkcode&"+Math.random();
     }
     if(window.parent != window) {
       window.parent.location = window.location;
