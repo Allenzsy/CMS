@@ -102,7 +102,7 @@ fieldset div {
 	<h3>添加频道成功</h3>
 	<div class="enter">
 	    <input name="addArticle" type="button" class="buttom" value="继续添加频道" onclick="window.location = 'channel/add_channel.jsp'"/>
-	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'SearchChannelServlet'"/>
+	    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ChannelServlet'"/>
 	</div>
 </div>
 

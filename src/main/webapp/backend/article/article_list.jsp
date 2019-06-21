@@ -89,7 +89,7 @@ td {
             }
         }
         function del() {
-            var url =  'DelArticleServlet'
+            var url =  'ArticleServlet'
             var idCheckboxs = document.getElementsByName("id");
             var flag = 0;
             for (var i = 0; i < idCheckboxs.length; i++) {
@@ -104,7 +104,7 @@ td {
             }
             alert(url);
             // window.location 相当于执行get
-            window.location = url;
+            window.location = url+"&method=delete";
         }
 
     </script>
@@ -134,7 +134,7 @@ td {
   </tr>
     <tr>
         <td>
-            <form action="SearchArticleServlet" method="post">
+            <form action="ArticleServlet" method="post">
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
                     <td align="right">文章标题：</td>
@@ -167,7 +167,7 @@ td {
             <td height="20" bgcolor="#FFFFFF"><div align="center">
               <input type="checkbox" name="id" value="${a.id}" /> <!-- 在标签中 id是唯一的，name可以是重复的-->
             </div></td>
-            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="OpenUpdateArticleServlet?id=${a.id}" title="点击查看和编辑文章">${a.title}</a></div></td>
+            <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center"><a href="ArticleServlet?id=${a.id}&method=openUpdate" title="点击查看和编辑文章">${a.title}</a></div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${a.source}</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">20</div></td>
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">5</div></td>
@@ -176,8 +176,8 @@ td {
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">2010-07-19</div></td>
             <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
             <a href="#" title="点击发布文章">发布</a> |
-            <a href="DelArticleServlet?id=${a.id}" title="点击删除文章">删除</a> |
-            <a href="OpenUpdateArticleServlet?id=${a.id}" title="点击编辑文章">编辑</a>
+            <a href="ArticleServlet?id=${a.id}&method=delete" title="点击删除文章">删除</a> |
+            <a href="ArticleServlet?id=${a.id}&method=openUpdate" title="点击编辑文章">编辑</a>
             </div></td>
           </tr>
             </c:forEach>

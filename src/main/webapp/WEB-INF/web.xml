@@ -35,8 +35,8 @@
     
     <!-- servlet 映射，有一些没列出来因为使用了@WebServlet注解 -->
     <servlet>
-        <servlet-name>CheckcodeServlet</servlet-name>
-        <servlet-class>com.zsy.cms.backend.view.CheckcodeServlet</servlet-class>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>com.zsy.cms.backend.view.LoginServlet</servlet-class>
         <init-param>
             <param-name>width</param-name>
             <param-value>44</param-value>
@@ -55,18 +55,10 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>CheckcodeServlet</servlet-name>
-        <url-pattern>/backend/images/checkcode.jpg</url-pattern>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/backend/LoginServlet</url-pattern>
     </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>SearchArticleServlet</servlet-name>
-        <servlet-class>com.zsy.cms.backend.view.SearchArticleServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SearchArticleServlet</servlet-name>
-        <url-pattern>/backend/SearchArticleServlet</url-pattern>
-    </servlet-mapping>
+
 
     <servlet>
         <servlet-name>InitBeanFactoryServlet</servlet-name>

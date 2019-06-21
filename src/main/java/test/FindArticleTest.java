@@ -34,7 +34,6 @@ public class FindArticleTest {
 //            DBUtil.close(conn);
 //        }
 
-        new PropertiesBeanFactory().getArticleDao();
     }
 
 }

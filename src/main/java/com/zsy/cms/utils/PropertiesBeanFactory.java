@@ -43,52 +43,9 @@ public class PropertiesBeanFactory implements BeanFactory {
         return daoBeans.get(name);
     }
 
-    @Override
-    public ArticleDao getArticleDao() {
-        Properties prop = new Properties();
-
-        try {
-            prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("factory.properties"));
-            System.out.println(prop.getProperty("ArticleDao"));
-            Class clazz = Class.forName(prop.getProperty("ArticleDao"));
-            return (ArticleDao) clazz.newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-    }
-
-    @Override
-    public ChannelDao getChannelDao() {
-        Properties prop = new Properties();
-        try {
-            prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("factory.properties"));
-            System.out.println(prop.getProperty("ChannelDao"));
-            Class clazz = Class.forName(prop.getProperty("ChannelDao"));
-            return (ChannelDao) clazz.newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     public static void main(String[] args) {
 
-        ChannelDao d = new PropertiesBeanFactory().getChannelDao();
         return;
     }
 }

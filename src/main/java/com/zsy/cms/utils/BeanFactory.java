@@ -6,6 +6,4 @@ import com.zsy.cms.backend.dao.ChannelDao;
 public interface BeanFactory {
 
     public Object getBean(String name);
-    public ArticleDao getArticleDao();
-    public ChannelDao getChannelDao();
 }

@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class ChannelDaoImplForSQL implements ChannelDao {
+public class ChannelDaoImpleForSQL implements ChannelDao {
     @Override
     public void addChannel(Channel c) {
         // 在数据库中插入数据

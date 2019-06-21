@@ -3,7 +3,6 @@ package com.zsy.cms.backend.view;
 import com.zsy.cms.utils.BeanFactory;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +17,6 @@ public class BaseServlet extends HttpServlet {
 
         BeanFactory beanFactory = (BeanFactory) req.getServletContext().getAttribute(InitBeanFactoryServlet.DAO_FACTORY);
 
-        System.out.println(this);
         Class clazz = this.getClass();
         Method[] methods = clazz.getMethods();
         for(Method method:methods) {
@@ -39,5 +37,42 @@ public class BaseServlet extends HttpServlet {
         }
 
         super.service(req, resp);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        process(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        process(req, resp);
+    }
+
+    protected void process (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+
+        // 获取需要执行的方法
+        String method = request.getParameter("method");
+        System.out.println(method);
+        // 这里获得的方法名，有可能是null，也有可能是空串""，这两种都应该是空。如果是具体方法则用反射执行具体方法
+        if(method == null || method.trim().equals("")) {
+            execute(request, response);
+        } else {
+            Method m = null;
+            try {
+                m = this.getClass().getMethod(method, HttpServletRequest.class, HttpServletResponse.class);
+                m.invoke(this, request, response);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    protected void execute (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 什么也不做，如果后面继承的类需要重写就重写，不需要就算了
     }
 }

@@ -89,7 +89,7 @@ td {
             }
         }
         function del() {
-            var url =  'DelChannelServlet'
+            var url =  'ChannelServlet'
             var idCheckboxs = document.getElementsByName("id");
             var flag = 0;
             for (var i = 0; i < idCheckboxs.length; i++) {
@@ -104,7 +104,7 @@ td {
             }
             alert(url);
             // window.location 相当于执行get
-            window.location = url;
+            window.location = url+"&method=delete";
         }
 
     </script>
@@ -134,7 +134,7 @@ td {
   </tr>
     <tr>
         <td>
-            <form action="SearchChannelServlet" method="post">
+            <form action="ChannelServlet" method="post">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
                         <td align="right">频道标题：</td>
@@ -166,8 +166,8 @@ td {
             <td height="20" bgcolor="#FFFFFF" class="STYLE19"><div align="center">${c.description}</div></td>
             <td height="20" bgcolor="#FFFFFF"><div align="center" class="STYLE21">
             <a href="#" title="点击发布文章">发布</a> |
-            <a href="DelChannelServlet?id=${c.id}" title="点击删除频道">删除</a> |
-            <a href="OpenUpdateChannelServlet?id=${c.id}" title="点击编辑频道">编辑</a>
+            <a href="ChannelServlet?id=${c.id}&method=delete" title="点击删除频道">删除</a> |
+            <a href="ChannelServlet?id=${c.id}&method=openUpdate" title="点击编辑频道">编辑</a>
             </div></td>
           </tr>
             </c:forEach>
@@ -182,7 +182,7 @@ td {
   <tr>
     <td height="30">
         <jsp:include page="/backend/common/pager.jsp">
-            <jsp:param name="url" value="SearchChannelServlet"/>
+            <jsp:param name="url" value="ChannelServlet"/>
             <jsp:param name="params" value="name"/>
         </jsp:include>
    </td>

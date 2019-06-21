@@ -100,7 +100,8 @@ fieldset div {
 <body>
 <div id="formwrapper">
 	<h3>编辑网站频道</h3>
-	<form action="AddChannelServlet" method="post">
+	<form action="ChannelServlet" method="post">
+		<input type="hidden" name="method" value="add">
 		<fieldset>
 			<legend>频道基本信息</legend>
 			<div>
@@ -116,7 +117,7 @@ fieldset div {
 			<div class="enter">
 				<input name="submit" type="submit" class="buttom" value="提交" />
 				<input name="reset" type="reset" class="buttom" value="重置" />
-		    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'SearchChannelServlet'"/>
+		    <input name="return" type="button" class="buttom" value="返回列表页面" onclick="window.location = 'ChannelServlet'"/>
 		</div>
 	</fieldset>
 	</form>
