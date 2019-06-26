@@ -2,6 +2,7 @@ package com.zsy.cms.backend.dao.imple;
 
 import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.model.Article;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
 import com.zsy.cms.utils.PageVO;
 
@@ -58,7 +59,7 @@ public class ArticleDaoImpleForOricle implements ArticleDao {
     }
 
     @Override
-    public PageVO<Article> searchArticle(int offset, int pageSize, String title) {
+    public PageVO<Article> searchArticle(String title, int offset, int pageSize) {
 
         // 将结果存在一个容器中。由于显示文章可能有多个属性，如文章标题，文章内容（部分）， 日期，访问量...
         // 所以，这里应该自己设计一个类，用来完成每条数据存储。
@@ -112,6 +113,11 @@ public class ArticleDaoImpleForOricle implements ArticleDao {
         pv.setDatas(list);
 
         return pv;
+    }
+
+    @Override
+    public PageVO<Article> searchArticle(Channel channel, int offset, int pageSize) {
+        return null;
     }
 
     @Override

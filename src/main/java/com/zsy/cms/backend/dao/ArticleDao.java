@@ -1,6 +1,7 @@
 package com.zsy.cms.backend.dao;
 
 import com.zsy.cms.backend.model.Article;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.PageVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,9 @@ public interface ArticleDao {
 
     // searchArticle需要输入offset pagesize，需要输出total articles的list,输出有两个且类型不同时，应该再创建一个类，
     // 这种类实际上是value object
-    public PageVO<Article> searchArticle(int offset, int pageSize, String title);
+    public PageVO<Article> searchArticle(String title, int offset, int pageSize);
+
+    public PageVO<Article> searchArticle(Channel channel, int offset, int pageSize);
 
     public Article findArticleById(String id, HttpServletRequest request, HttpServletResponse response);
 

@@ -2,6 +2,7 @@ package com.zsy.cms.backend.dao.imple;
 
 import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.model.Article;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.DBUtil;
 import com.zsy.cms.utils.PageVO;
 
@@ -11,26 +12,59 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class ArticleDaoImpleForSQL implements ArticleDao {
     @Override
     public void addArticle(Article a) {
         // 插入数据库
+        String sql = "insert into t_article("+
+                "title,source,content,author,keyword,intro,type,recommend,headline,topicId,createtime,updatetime,adminId) "+
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        String sqlForChannel ="insert into t_channel_article (channelId, articleId) values (?,?)";
         Connection conn = DBUtil.getConn();
         PreparedStatement pstmt = null;
+        PreparedStatement pstmtForChannel = null;
         try {
-            pstmt = conn.prepareStatement("insert into t_article(title,content,source,createtime) values(?,?,?,?)");
+            pstmt = conn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, a.getTitle());
-            pstmt.setString(2, a.getContent());
-            pstmt.setString(3, a.getSource());
-            pstmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
-
+            pstmt.setString(2, a.getSource());
+            pstmt.setString(3, a.getContent());
+            pstmt.setString(4, a.getAuthor());
+            pstmt.setString(5, a.getKeyword());
+            pstmt.setString(6, a.getIntro());
+            pstmt.setString(7, a.getType());
+            pstmt.setBoolean(8, a.isRecommend());
+            pstmt.setBoolean(9, a.isHeadline());
+            pstmt.setInt(10, a.getTopicId());
+            pstmt.setTimestamp(11, new Timestamp(System.currentTimeMillis()));
+            pstmt.setTimestamp(12, new Timestamp(System.currentTimeMillis()));
+            pstmt.setInt(13, a.getAdminId());
             pstmt.executeUpdate();
+
+            ResultSet newId = pstmt.getGeneratedKeys();
+            if(newId.next()) {
+                a.setId(newId.getInt(1));
+            }
+
+            // 插入文章与频道之间的关联信息
+            Set<Channel> channels = a.getChannels();
+            if(channels != null) {
+                for (Channel c : channels) {
+                    pstmtForChannel = conn.prepareStatement(sqlForChannel);
+                    pstmtForChannel.setInt(1,c.getId());
+                    // 这里，由于文章刚刚插入，实体类中文章的id并不存在，在数据库中是存在的，是自增长的
+                    // 由于设置了id作为key，所以在创建statement时，可以传入第二个参数Statement.RETURN_GENERATED_KEYS,会将自动增长的key返回到pstmt中
+                    pstmtForChannel.setInt(2,a.getId());
+                    pstmtForChannel.executeUpdate();
+                }
+            }
             conn.commit();
         }catch (SQLException e) {
             e.printStackTrace();
             DBUtil.rollBack(conn);
         } finally {
+            DBUtil.close(pstmtForChannel);
             DBUtil.close(pstmt);
             DBUtil.close(conn);
         }
@@ -58,7 +92,7 @@ public class ArticleDaoImpleForSQL implements ArticleDao {
     }
 
     @Override
-    public PageVO<Article> searchArticle(int offset, int pageSize, String title) {
+    public PageVO<Article> searchArticle(String title, int offset, int pageSize) {
 
         // 将结果存在一个容器中。由于显示文章可能有多个属性，如文章标题，文章内容（部分）， 日期，访问量...
         // 所以，这里应该自己设计一个类，用来完成每条数据存储。
@@ -112,6 +146,11 @@ public class ArticleDaoImpleForSQL implements ArticleDao {
         pv.setDatas(list);
 
         return pv;
+    }
+
+    @Override
+    public PageVO<Article> searchArticle(Channel channel, int offset, int pageSize) {
+        return null;
     }
 
     @Override
@@ -178,4 +217,6 @@ public class ArticleDaoImpleForSQL implements ArticleDao {
             DBUtil.close(conn);
         }
     }
+
+
 }

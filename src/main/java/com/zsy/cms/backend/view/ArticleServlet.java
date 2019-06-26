@@ -119,7 +119,7 @@ public class ArticleServlet extends BaseServlet {
         }
 
         String title = request.getParameter("title");
-        PageVO<Article> pv = articleDao.searchArticle(offset, pageSize, title);
+        PageVO<Article> pv = articleDao.searchArticle(title, offset, pageSize);
 
         // 将查询到的文章传递给jsp
         request.setAttribute("articles", pv.getDatas());

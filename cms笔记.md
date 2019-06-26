@@ -1,6 +1,8 @@
 # CMS
 
-## login 中的 checkcode
+## 第一个大版本：初步完成CMS需求
+
+###  login 中的 checkcode
 
 第一步：
 
@@ -55,7 +57,7 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 
 
 
-## 编辑文章
+### 编辑文章
 
 <center>![img](G:\javaTest\IdeaProjects\CMS\temp\编辑文章流程.JPG)</center>
 
@@ -121,7 +123,7 @@ public class BaseServlet extends HttpServlet {
 }
 ```
 
-#### 减少servlet数量
+### 减少servlet数量
 
 把article相关的servlet都放在一个里面 ，继续利用BaseServlet，产生一个统一的调用函数，并且用反射机制去调用请求的方法。
 
@@ -144,3 +146,45 @@ public class ArticleServlet extends BaseServlet{
 ```
 在BaseServlet中，根据界面传递过来的参数method的取值，利用反射机制调用不同的方法即可！
 
+### 解决Servlet重写init的小问题
+
+当重写init(ServletConfig)方法的时候，记得调用super.init(ServletConfig)，调用super.init(ServletConfig)的目的，主要是由于在父类（GenericServlet）中，有一个ServletConfig实例变量，super.init(ServletConfig)就是给这个实例变量复制。
+
+这样，再后续的getServletContext()操作，才可以拿到ServletContext对象: GenericServlet的部分源代码如下所示：
+
+```java
+public abstract class GenericServlet implements Servlet, ServletConfig, java.io.Serializable {
+
+	private transient ServletConfig config;
+
+    public void init(ServletConfig config) throws ServletException {
+        this.config = config;
+        this.init();
+    }
+    public void init() throws ServletException {
+    }    
+    public ServletConfig getServletConfig() {
+        return config;
+    }
+    public ServletContext getServletContext() {
+        return getServletConfig().getServletContext();
+	}
+｝
+```
+
+### 第一阶段完成的内容
+
+1. 完整实现了ArticleServlet、ChannelServlet、LoginServlet
+   - 将与Article有关的Servlet全部合成到ArticleServlet类中
+   - 将与Channel有关的Servlet全部合成到ChannelServlet类中
+
+1. 定义了接口ArticleDao、ChannelDao，AdminDao，以及他们的sql实现
+   - 将与Article有关的数据库操作全部放到ArticleDao中
+   - 将与Channel有关的数据库操作全部放到ChannelDao中
+   - 将与Admin有关的数据库操作全部放到AdminDao中
+2. 创建了Article，Channel，Admin实体类
+   - 
+
+
+
+创建了Admin实体类，t_admin数据库表，并创建了AdminDao接口
