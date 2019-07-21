@@ -60,7 +60,7 @@ public class ChannelDaoImpleForSQL implements ChannelDao {
     }
 
     @Override
-    public PageVO<Channel> searchChannel(int offset, int pageSize, String name) {
+    public PageVO<Channel> findChannelByName(int offset, int pageSize, String name) {
 
         // 将结果存在一个容器中。由于显示文章可能有多个属性，如文章标题，文章内容（部分）， 日期，访问量...
         // 所以，这里应该自己设计一个类，用来完成每条数据存储。

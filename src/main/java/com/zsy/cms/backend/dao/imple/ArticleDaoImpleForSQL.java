@@ -102,7 +102,7 @@ public class ArticleDaoImpleForSQL implements ArticleDao {
         String sql = "select * from t_article limit ?,?";
         String sqlForTotal = "select count(*) from t_article";
         if(title != null) {
-            sql = "select * from t_article where title like '%"+title+"%' limit ?,?";;
+            sql = "select * from t_article where title like '%"+title+"%' limit ?,?";
             sqlForTotal = "select count(*) from t_article where title like '%"+title+"%'";
         }
         Connection conn = DBUtil.getConn();

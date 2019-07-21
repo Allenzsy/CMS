@@ -14,8 +14,8 @@ create table t_article(
 	clickNumber integer,
 	adminId integer,
 	topicId integer,
-	createtime datetime,
-	updatetime datetime,
-	deploytime datetime,
+	createTime datetime,
+	updateTime datetime,
+	deployTime datetime,
 	primary key(id)
 );

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zsy.cms.backend.model.Article">
+    <insert id="add" parameterType="Article" keyProperty="id" useGeneratedKeys="true">
+        insert into t_article
+        (title,source,content,author,keyword,intro,type,recommend,headline,topicId,createTime,updateTime,adminId)
+        values
+        (#{title},#{source},#{content},#{author},#{keyword},#{intro},#{type},#{recommend},#{headline},#{topicId},#{createTime},#{updateTime},#{adminId})
+    </insert>
+    <insert id="insert_channel_article" parameterType="Map">
+        insert into t_channel_article (channelId, articleId) values (#{cid},#{aid});
+    </insert>
+
+
+    <delete id="del" parameterType="int">
+        delete t_article, t_channel_article from t_article
+        left join t_channel_article on t_article.id = t_channel_article.articleId
+        where t_article.id = #{id}
+    </delete>
+    <delete id="delCA_Conn" parameterType="int">
+        delete from t_channel_article where articleId=#{id}
+    </delete>
+
+
+    <select id="searchArticle" parameterType="Map" resultType="Article">
+        select * from t_article
+        <if test="title != null">
+            where title like '%${title}%'
+        </if>
+        limit #{offset},#{pageSize}
+    </select>
+    <select id="searchArticleForTotal" parameterType="Map" resultType="int">
+        select count(*) from t_article
+        <if test="title != null">
+            where title like '%${title}%'
+        </if>
+    </select>
+
+
+    <resultMap id="mappingChannel" type="Article">
+        <!-- 其他的字段可以自动进行映射，因为名字都是对应的 -->
+        <id property="id" column="id"/>
+        <collection property="channels" column="id" ofType="Channel" select="searchChannel">
+            <!-- 还可以在对查询到的集合中POJO对象的属性和字段再进行映射 -->
+        </collection>
+    </resultMap>
+    <select id="findArticleById" parameterType="int" resultMap="mappingChannel">
+        select * from t_article where id=#{id}
+    </select>
+    <select id="searchChannel" parameterType="int" resultType="Channel">
+        select * from t_channel c, t_channel_article ca where ca.articleId = #{id} AND c.id = ca.channelId
+    </select>
+
+
+    <update id="updateArticle" parameterType="Article">
+        update t_article set
+        title=#{title},
+        source=#{source},
+        content=#{content},
+        author=#{author},
+        keyword=#{keyword},
+        intro=#{intro},
+        type=#{type},
+        recommend=#{recommend},
+        headline=#{headline},
+        updateTime=#{updateTime} where id = #{id}
+    </update>
+
+
+    <select id="searchArticleByChannel" parameterType="Map" resultType="Article">
+        <choose>
+            <when test="c != null">
+                select * from  t_article a,t_channel_article ca where ca.channelId = #{c.id}
+                AND a.id = ca.articleId
+                limit #{offset},#{pageSize}
+            </when>
+            <otherwise>
+                select * from  t_article
+                limit #{offset},#{pageSize}
+            </otherwise>
+        </choose>
+    </select>
+    <select id="searchArticleByChannelForTotal" parameterType="Map" resultType="int">
+        <choose>
+            <when test="c != null">
+                select count(*) from  t_article AS a, t_channel_article AS ca where a.id = ca.articleId
+                AND ca.channelId = #{c.id}
+            </when>
+            <otherwise>
+                select count(*) from  t_article
+            </otherwise>
+        </choose>
+    </select>
+
+
+
+</mapper>

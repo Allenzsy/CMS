@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zsy.cms.backend.model.Channel">
+    <insert id="addChannel" parameterType="Channel" keyProperty="id" useGeneratedKeys="true">
+        insert into t_channel(name, description) values(#{name},#{description})
+    </insert>
+
+    <delete id="delChannel" parameterType="int">
+        delete from t_channel where id = #{id}
+    </delete>
+
+    <select id="findChannelByName" parameterType="Map" resultType="Channel">
+        select * from t_channel
+        <if test="name != null">
+            where name like '%${name}%'
+        </if>
+        limit #{offset},#{pageSize}
+    </select>
+    <select id="findChannelByNameForTotal" parameterType="Map" resultType="int">
+        select count(*) from t_channel
+        <if test="name != null">
+            where name like '%${name}%'
+        </if>
+    </select>
+
+    <select id="findChannelById" parameterType="int" resultType="Channel">
+        select * from t_channel where id = #{id}
+    </select>
+
+    <update id="updateChannel" parameterType="Channel">
+        update t_channel set name=#{name}, description=#{description} where id=#{id}
+    </update>
+
+</mapper>

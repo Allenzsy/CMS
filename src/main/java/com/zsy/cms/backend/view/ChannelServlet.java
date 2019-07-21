@@ -102,7 +102,7 @@ public class ChannelServlet extends BaseServlet {
         }
 
         String name = request.getParameter("name");
-        PageVO<Channel> pv = channelDao.searchChannel(offset, pageSize, name);
+        PageVO<Channel> pv = channelDao.findChannelByName(offset, pageSize, name);
 
 
         // 放入容器中，并在request中利用setAtrribute放入request中

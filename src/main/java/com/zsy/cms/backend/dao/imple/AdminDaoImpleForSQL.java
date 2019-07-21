@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class AdminDaoImpleForSQL implements AdminDao {
 
     @Override
-    public Admin getAdmin(String username) {
+    public Admin findAdminByUsername(String username) {
 
         Connection conn = DBUtil.getConn();
         PreparedStatement pstmt = null;
@@ -42,5 +42,28 @@ public class AdminDaoImpleForSQL implements AdminDao {
             DBUtil.close(conn);
         }
         return admin;
+    }
+
+    @Override
+    public void addAdmin(Admin admin) {
+        String sql = "insert into t_admin (username,password) values (?,?)";
+        Connection conn = DBUtil.getConn();
+        PreparedStatement pstmt = null;
+
+        try {
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, admin.getUsername());
+            pstmt.setString(2, admin.getPassword());
+
+            pstmt.execute();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            DBUtil.rollBack(conn);
+        } finally {
+            DBUtil.close(pstmt);
+            DBUtil.close(conn);
+        }
+
     }
 }

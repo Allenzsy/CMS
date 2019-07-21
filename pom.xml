@@ -59,7 +59,12 @@
             <scope>test</scope>
         </dependency>
 
-
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.4.6</version>
+        </dependency>
 
     </dependencies>
 
@@ -83,7 +88,14 @@
         </plugins>
         <!--执行构建时默认的goal，这里为编译-->
         <defaultGoal>compile</defaultGoal>
-
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
 <!--        <resources>-->
 <!--            <resource>-->
 <!--                <directory>src/main/resources</directory>-->

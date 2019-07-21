@@ -64,7 +64,6 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 
 
 
-
 将数据库操作逻辑封装到DAO中，首先实现DAO接口，然后对接口进行相应实现。使得具体的servlet不依赖于具体代码的实现。
 
 利用抽象工厂设计模式，及使用配置文件来避免因为变化所产生的影响
@@ -188,3 +187,16 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 
 创建了Admin实体类，t_admin数据库表，并创建了AdminDao接口
+
+## 第二个大版本
+
+利用 MyBatis 替换手写 JDBC 
+
+现在直接点击添加是直接转向 add_Article.jsp，但是现在不能这样，因为需要先经过一个 Servlet 先查询到所有 Channel 放到 request 中，然后再转向 add_Article.jsp 才能拿到所有的 Channel。那么由于前面将所有的 Article 的Servlet 都整合在了一起，现在只需要在其中添加一个新的方法就可以了。
+
+### 在使用Maven的情况下，idea导入本地包，不放入Maven本地仓库
+
+首先通过 File ---> Project Structure ---> Modules ---> 点击“+”号，添加jar包。然后选中新添加的，点击 apply。之后再去 Artifacts 中找到 XXX：war exploded 下的  Output Layout 看到右侧有 Available Elements 把新添加的包部署到 WEB-INF 的 lib 下就可以了
+
+
+
