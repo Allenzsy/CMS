@@ -7,6 +7,7 @@ import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.BeanFactory;
 import com.zsy.cms.utils.PageVO;
 import com.zsy.cms.utils.PropertiesBeanFactory;
+import com.zsy.cms.utils.RequestUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,42 +38,7 @@ public class ArticleServlet extends BaseServlet {
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 获取提交文章的表单信息
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String source = request.getParameter("source");
-        String author = request.getParameter("author");
-        String keyword = request.getParameter("keyword");     //关键字
-        String intro = request.getParameter("intro");       //简介
-        String type = request.getParameter("type");        //分类
-        String recommend = request.getParameter("recommend");  //是否推荐阅读
-        String headline = request.getParameter("headline");   //是否作为首页头条
-        String[] channelIds = request.getParameterValues("channelIds");
-
-        Article a = new Article();
-        a.setTitle(title);
-        a.setContent(content);
-        a.setSource(source);
-        a.setAuthor(author);
-        a.setKeyword(keyword);
-        a.setIntro(intro);
-        a.setType(type);
-        if(recommend != null) {
-            a.setRecommend(Boolean.parseBoolean(recommend));
-        }
-        if(headline != null) {
-            a.setHeadline(Boolean.parseBoolean(headline));
-        }
-        if(channelIds != null) {
-            Set<Channel> channels = new HashSet<>();
-            for(String cid : channelIds) {
-                Channel c = new Channel();
-                c.setId(Integer.parseInt(cid));
-                channels.add(c);
-            }
-            a.setChannels(channels);
-        }
-        a.setCreateTime(new Date());
-
+        Article a = RequestUtil.copyParams(Article.class, request);
         articleDao.addArticle(a);
 
         // 显示文章添加成功页面
@@ -121,48 +87,13 @@ public class ArticleServlet extends BaseServlet {
     public void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 根据提交内容，获取信息
         String id = request.getParameter("id");
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String source = request.getParameter("source");
-        String author = request.getParameter("author");
-        String keyword = request.getParameter("keyword");     //关键字
-        String intro = request.getParameter("intro");       //简介
-        String type = request.getParameter("type");        //分类
-        String recommend = request.getParameter("recommend");  //是否推荐阅读
-        String headline = request.getParameter("headline");   //是否作为首页头条
-        String[] channelIds = request.getParameterValues("channelIds");
-
-        Article a = new Article();
-        a.setId(Integer.parseInt(id));
-        a.setTitle(title);
-        a.setContent(content);
-        a.setSource(source);
-        a.setAuthor(author);
-        a.setKeyword(keyword);
-        a.setIntro(intro);
-        a.setType(type);
-        if(recommend != null) {
-            a.setRecommend(Boolean.parseBoolean(recommend));
-        }
-        if(headline != null) {
-            a.setHeadline(Boolean.parseBoolean(headline));
-        }
-        if(channelIds != null) {
-            Set<Channel> channels = new HashSet<>();
-            for(String cid : channelIds) {
-                Channel c = new Channel();
-                c.setId(Integer.parseInt(cid));
-                channels.add(c);
-            }
-            a.setChannels(channels);
-        }
-        a.setUpdateTime(new Date());
-
         if(id == null) {
             request.setAttribute("error", "删除错误，id不能为空");
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
+
+        Article a = RequestUtil.copyParams(Article.class, request);
         // 更新文章的内容
         articleDao.updateArticle(a);
 

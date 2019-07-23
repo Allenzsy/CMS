@@ -136,8 +136,8 @@ fieldset div {
 				<input type="checkbox" name="headline" value="true"/>是否首页头条 <!--选中的时候是true-->
 			</div>
 			<div>
-				<label for="channelIds">所属频道</label>
-				<select name="channelIds" id="channelIds" multiple="multiple"><!--这里需要根据查询显示所有频道，不能写死-->
+				<label for="channels">所属频道</label>
+				<select name="channels" id="channels" multiple="multiple"><!--这里需要根据查询显示所有频道，不能写死-->
 					<c:forEach items="${channels}" var="c">
 						<option value="${c.id}">${c.name}</option>
 					</c:forEach>

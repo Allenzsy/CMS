@@ -11,15 +11,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class ArticleDaoImpleForMyBatis implements ArticleDao {
 
     @Override
     public void addArticle(Article a) {
+        a.setCreateTime(new Date());
         SqlSession sqlSession = MyBatisUtil.getSession();
 
         try {
@@ -153,6 +151,7 @@ public class ArticleDaoImpleForMyBatis implements ArticleDao {
 
     @Override
     public void updateArticle(Article a) {
+        a.setUpdateTime(new Date());
         SqlSession sqlSession = MyBatisUtil.getSession();
 
         try {

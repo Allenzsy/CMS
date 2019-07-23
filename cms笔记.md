@@ -62,8 +62,6 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 <center>![img](G:\javaTest\IdeaProjects\CMS\temp\编辑文章流程.JPG)</center>
 
 
-
-
 将数据库操作逻辑封装到DAO中，首先实现DAO接口，然后对接口进行相应实现。使得具体的servlet不依赖于具体代码的实现。
 
 利用抽象工厂设计模式，及使用配置文件来避免因为变化所产生的影响
@@ -190,7 +188,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 ## 第二个大版本
 
-利用 MyBatis 替换手写 JDBC 
+### 利用 MyBatis 替换手写 JDBC 
 
 现在直接点击添加是直接转向 add_Article.jsp，但是现在不能这样，因为需要先经过一个 Servlet 先查询到所有 Channel 放到 request 中，然后再转向 add_Article.jsp 才能拿到所有的 Channel。那么由于前面将所有的 Article 的Servlet 都整合在了一起，现在只需要在其中添加一个新的方法就可以了。
 
@@ -198,5 +196,59 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 首先通过 File ---> Project Structure ---> Modules ---> 点击“+”号，添加jar包。然后选中新添加的，点击 apply。之后再去 Artifacts 中找到 XXX：war exploded 下的  Output Layout 看到右侧有 Available Elements 把新添加的包部署到 WEB-INF 的 lib 下就可以了
 
+### 文章添加修改
 
+
+
+### 文章更新修改
+
+文章修改时需要考虑到对于频道的更新，根据以前的更新流程是：
+
+- 拿到文章id -----> 查询文章 -----> 打开更新页面 -----> 更新内容 -----> 更新成功页面
+
+大致流程不需要进行变化，但是中间的细节没有考虑完全：
+
+1. 查询文章时没有拿到相应的关联频道信息；
+
+   - 可以通过 [MyBatis](https://www.cnblogs.com/kenhome/p/7764398.html) 的 resultMap 进行复杂的映射，在查询文章时将关联信息放到 channels 中
+
+   - ```xml
+         <resultMap id="mappingChannel" type="Article">
+             <!-- 其他的字段可以自动进行映射，因为名字都是对应的 -->
+             <id property="id" column="id"/>
+             <collection property="channels" column="id" ofType="Channel" select="searchChannel">
+                 <!-- 还可以在对查询到的集合中POJO对象的属性和字段再进行映射 -->
+             </collection>
+         </resultMap>
+         <select id="findArticleById" parameterType="int" resultMap="mappingChannel">
+             select * from t_article where id=#{id}
+         </select>
+         <select id="searchChannel" parameterType="int" resultType="Channel">
+             select * from t_channel c, t_channel_article ca where ca.articleId = #{id} AND c.id = ca.channelId
+         </select>
+     ```
+
+2. 更新内容时不光要更新 t_article 表，还有 t_channel_article 表；
+
+### 对add和update中的请求参数进行封装
+
+一般在开发过程中，从jsp中得到的参数名称和POJO对象中的属性名称是一致的，此时可以利用JAVA的反射机制进行赋值；
+
+通过 request.getParameterMap 得到所有参数的 Map 其中 key 是参数名称，value 是参数的值（是String[]类型，只有一个值也是长度为1的String[]）,这就涉及到了类型转换，因为POJO对象的属性还有很多其他类型。如果不借助其他工具，自己手写的思路是：
+
+> 1. 首先拿到所有参数；
+> 2. 根据名称，去找POJO对象中相关属性，并查找有没有赋值方法setXxxx()；
+> 3. 通过反射机制，查看setXxx()需要什么类型；
+> 4. 转换类型，赋值；
+
+这里则使用其他工具，apache-commons-BeanUtils 就是对 Java 反射封装的类库。具体使用方法见代码中 BeanUtilsTest 类。遍历 HashMap 的四种[方式1](https://www.jianshu.com/p/f6a60ef2861d)和[方式2](https://www.cnblogs.com/qianjinyan/p/10537736.html)
+
+### 对 DAO 进一步封装
+
+其实封装就是把重复的部分抽离出来，再将变化的东西作为参数送入进去。那么要封装好，需要遵守一些命名规则：
+
+>1. MyBatis的namespace要取实体类的全路类名
+>2. Mybatis的语句id要遵守一些规则，例如CRUD的操作，添加就是add，删除就是del
+>
+>
 
