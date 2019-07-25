@@ -1,5 +1,6 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.SystemContext;
 import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.dao.ChannelDao;
 import com.zsy.cms.backend.model.Article;
@@ -30,7 +31,9 @@ public class ArticleServlet extends BaseServlet {
         // 获取提交文章的表单信息
 
         // 查出所有的频道列表，然后放到request中
-        PageVO<Channel> pv = channelDao.findChannelByName(0, Integer.MAX_VALUE, null);
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(Integer.MAX_VALUE);
+        PageVO<Channel> pv = channelDao.findChannelByName(null);
         request.setAttribute("channels", pv.getDatas());
         // forward 到添加文章界面
         request.getRequestDispatcher("/backend/article/add_article.jsp").forward(request, response);
@@ -75,7 +78,9 @@ public class ArticleServlet extends BaseServlet {
         }
 
         Article a = articleDao.findArticleById(id, request, response);
-        PageVO<Channel> pv = channelDao.findChannelByName(0, Integer.MAX_VALUE, null);
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(Integer.MAX_VALUE);
+        PageVO<Channel> pv = channelDao.findChannelByName(null);
 
         // forward 到更新的jsp页面
         request.setAttribute("updateArticle", a);
@@ -105,25 +110,9 @@ public class ArticleServlet extends BaseServlet {
     // 这里重写BaseServlet中的方法，将缺省方法改为查询
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int offset = 0;
-        int pageSize = 5;
-        // 希望从requset中获取offset， 从session中获取pageSize，session中如果没有那么则设置缺省值
-        try {
-            offset = Integer.parseInt(request.getParameter("pager.offset"));
-        } catch (Exception ignore) { }
-        // 如果从request中拿到了pageSize的值，那么需要更新Session中的PageSize的值
-        if(request.getParameter("pageSize") != null) {
-            request.getSession().setAttribute("pageSize", Integer.parseInt(request.getParameter("pageSize")));
-        }
-        Integer ps = (Integer) request.getSession().getAttribute("pageSize");
-        if(ps == null) {
-            request.getSession().setAttribute("pageSize", pageSize);
-        } else {
-            pageSize = ps;
-        }
 
         String title = request.getParameter("title");
-        PageVO<Article> pv = articleDao.searchArticle(title, offset, pageSize);
+        PageVO<Article> pv = articleDao.findArticleByTitle(title);
 
         // 将查询到的文章传递给jsp
         request.setAttribute("articles", pv.getDatas());

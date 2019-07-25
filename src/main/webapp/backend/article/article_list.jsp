@@ -192,7 +192,7 @@ td {
     <tr>
         <td height="30">
             <jsp:include page="/backend/common/pager.jsp">
-                <jsp:param name="url" value="SearchArticleServlet"/>
+                <jsp:param name="url" value="ArticleServlet"/>
                 <jsp:param name="params" value="title"/>
             </jsp:include>
         </td>

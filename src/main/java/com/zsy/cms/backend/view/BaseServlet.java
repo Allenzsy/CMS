@@ -1,5 +1,6 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.SystemContext;
 import com.zsy.cms.utils.BeanFactory;
 
 import javax.servlet.ServletException;
@@ -36,7 +37,13 @@ public class BaseServlet extends HttpServlet {
             }
         }
 
+        SystemContext.setOffset(this.getOffset(req));
+        SystemContext.setPageSize(this.getPageSize(req));
+
         super.service(req, resp);
+
+        SystemContext.removeOffset();
+        SystemContext.removePageSize();
     }
 
     @Override
@@ -74,5 +81,30 @@ public class BaseServlet extends HttpServlet {
 
     protected void execute (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 什么也不做，如果后面继承的类需要重写就重写，不需要就算了
+    }
+
+    protected int getOffset(HttpServletRequest request) {
+        int offset = 0;
+        int pageSize = 0;
+
+        try {
+            offset = Integer.parseInt(request.getParameter("pager.offset"));
+        } catch (Exception ignore) { }
+        return offset;
+    }
+    protected int getPageSize(HttpServletRequest request) {
+        int pageSize = 5;
+        // 希望从session中获取pageSize，session中如果没有那么则设置缺省值
+        // 如果从request中拿到了pageSize的值，那么需要更新Session中的PageSize的值
+        if(request.getParameter("pageSize") != null) {
+            request.getSession().setAttribute("pageSize", Integer.parseInt(request.getParameter("pageSize")));
+        }
+        Integer ps = (Integer) request.getSession().getAttribute("pageSize");
+        if(ps == null) {
+            request.getSession().setAttribute("pageSize", pageSize);
+        } else {
+            pageSize = ps;
+        }
+        return pageSize;
     }
 }

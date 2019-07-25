@@ -49,9 +49,9 @@ public class ArticleDaoImpleForMyBatisTest {
     }
 
     @Test
-    public void searchArticle() {
+    public void findArticleByTitle() {
         PageVO<Article> pv;
-        pv = articleDao.searchArticle("8",0,5);
+        pv = articleDao.findArticleByTitle("8");
         System.out.println("Total:" + pv.getTotal());
         List<Article> datas = pv.getDatas();
         for (Iterator iterator = datas.iterator(); iterator.hasNext(); ) {
@@ -65,7 +65,7 @@ public class ArticleDaoImpleForMyBatisTest {
         PageVO<Article> pv;
         Channel c = new Channel();
         c.setId(4);
-        pv = articleDao.searchArticle(c,0,5);
+        pv = articleDao.findArticleByChannel(c);
         System.out.println("Total:" + pv.getTotal());
         List<Article> datas = pv.getDatas();
         for (Iterator iterator = datas.iterator(); iterator.hasNext(); ) {

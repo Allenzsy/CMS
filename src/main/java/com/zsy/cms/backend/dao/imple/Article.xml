@@ -25,14 +25,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     </delete>
 
 
-    <select id="searchArticle" parameterType="Map" resultType="Article">
+    <select id="searchArticleByTitle" parameterType="Map" resultType="Article">
         select * from t_article
         <if test="title != null">
             where title like '%${title}%'
         </if>
+        order by createTime desc
         limit #{offset},#{pageSize}
     </select>
-    <select id="searchArticleForTotal" parameterType="Map" resultType="int">
+    <select id="searchArticleByTitleForTotal" parameterType="Map" resultType="int">
         select count(*) from t_article
         <if test="title != null">
             where title like '%${title}%'
@@ -47,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
             <!-- 还可以在对查询到的集合中POJO对象的属性和字段再进行映射 -->
         </collection>
     </resultMap>
-    <select id="findArticleById" parameterType="int" resultMap="mappingChannel">
+    <select id="findById" parameterType="int" resultMap="mappingChannel">
         select * from t_article where id=#{id}
     </select>
     <select id="searchChannel" parameterType="int" resultType="Channel">
@@ -71,17 +72,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 
     <select id="searchArticleByChannel" parameterType="Map" resultType="Article">
-        <choose>
-            <when test="c != null">
-                select * from  t_article a,t_channel_article ca where ca.channelId = #{c.id}
-                AND a.id = ca.articleId
-                limit #{offset},#{pageSize}
-            </when>
-            <otherwise>
-                select * from  t_article
-                limit #{offset},#{pageSize}
-            </otherwise>
-        </choose>
+        select * from  t_article a
+        <if test="c != null">
+            ,t_channel_article ca where ca.channelId = #{c.id}
+            AND a.id = ca.articleId
+
+        </if>
+        order by createTime desc
+        limit #{offset},#{pageSize}
     </select>
     <select id="searchArticleByChannelForTotal" parameterType="Map" resultType="int">
         <choose>
@@ -93,6 +91,13 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
                 select count(*) from  t_article
             </otherwise>
         </choose>
+    </select>
+
+    <select id="findHeadline" parameterType="int" resultType="Article">
+        select * from t_article where headline=true order by createTime desc limit 0,#{max}
+    </select>
+    <select id="findRecommend" parameterType="int" resultType="Article">
+        select * from t_article where recommend=true order by createTime desc limit 0,#{max}
     </select>
 
 

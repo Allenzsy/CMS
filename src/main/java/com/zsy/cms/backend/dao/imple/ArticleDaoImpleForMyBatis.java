@@ -1,5 +1,6 @@
 package com.zsy.cms.backend.dao.imple;
 
+import com.zsy.cms.SystemContext;
 import com.zsy.cms.backend.dao.ArticleDao;
 import com.zsy.cms.backend.model.Article;
 import com.zsy.cms.backend.model.Channel;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
-public class ArticleDaoImpleForMyBatis implements ArticleDao {
+public class ArticleDaoImpleForMyBatis extends BaseDao implements ArticleDao {
 
     @Override
     public void addArticle(Article a) {
@@ -48,102 +49,44 @@ public class ArticleDaoImpleForMyBatis implements ArticleDao {
 
     @Override
     public void delArticle(String[] ids) {
-        SqlSession sqlSession = MyBatisUtil.getSession();
-
-        try {
-            if(ids != null) {
-                for (String id : ids) {
-                    sqlSession.delete(Article.class.getName()+".del", Integer.parseInt(id));
-                }
-            }
-
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            sqlSession.rollback();
-        } finally {
-            sqlSession.close();
-        }
-
+        this.del(Article.class, ids);
     }
 
     @Override
-    public PageVO<Article> searchArticle(String title, int offset, int pageSize) {
-        SqlSession sqlSession = MyBatisUtil.getSession();
-        List<Article> articles = null;
-        int total = 0;
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("title", title);
-            params.put("offset", offset);
-            params.put("pageSize", pageSize);
-            articles = sqlSession.selectList(Article.class.getName()+".searchArticle",params);
-            total = (Integer) sqlSession.selectOne(Article.class.getName()+".searchArticleForTotal",params);
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            sqlSession.rollback();
-        } finally {
-            sqlSession.close();
-        }
+    public PageVO<Article> findArticleByTitle(String title) {
 
-        PageVO<Article> pv = new PageVO<>();
-        pv.setDatas(articles);
-        pv.setTotal(total);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("title", title);
+        PageVO<Article> pv = this.findPaginated(Article.class.getName()+".searchArticleByTitle", params);
 
         return pv;
     }
 
     @Override
-    public PageVO<Article> searchArticle(Channel channel, int offset, int pageSize) {
-        SqlSession sqlSession = MyBatisUtil.getSession();
-        List<Article> articles = null;
-        int total = 0;
-        try {
-            Map<String, Object> params = new HashMap<>();
-            params.put("c", channel);
-            params.put("offset", offset);
-            params.put("pageSize", pageSize);
-            articles = sqlSession.selectList(Article.class.getName()+".searchArticleByChannel",params);
-            total = (Integer) sqlSession.selectOne(Article.class.getName()+".searchArticleByChannelForTotal",params);
-            sqlSession.commit();
-        } catch (Exception e) {
-            e.printStackTrace();
-            sqlSession.rollback();
-        } finally {
-            sqlSession.close();
-        }
+    public PageVO<Article> findArticleByChannel(Channel channel) {
 
-        PageVO<Article> pv = new PageVO<>();
-        pv.setDatas(articles);
-        pv.setTotal(total);
-
+        Map<String, Object> params = new HashMap<>();
+        params.put("c", channel);
+        PageVO<Article> pv = this.findPaginated(Article.class.getName()+".searchArticleByChannel", params);
 
         return pv;
     }
 
     @Override
     public Article findArticleById(String id, HttpServletRequest request, HttpServletResponse response) {
-        SqlSession sqlSession = MyBatisUtil.getSession();
-        Article article = null;
-        try {
-            article = sqlSession.selectOne(Article.class.getName()+".findArticleById", Integer.parseInt(id));
-            if (article == null) {
-                request.setAttribute("error", "不存在为"+id+"的文章，无法编辑");
-                try {
-                    request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
-                } catch (ServletException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
+
+        Article article = findById(Article.class, id);
+
+        if (article == null) {
+            request.setAttribute("error", "不存在为"+id+"的文章，无法编辑");
+            try {
+                request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            sqlSession.close();
+            return null;
         }
 
         return article;
@@ -178,5 +121,49 @@ public class ArticleDaoImpleForMyBatis implements ArticleDao {
         } finally {
             sqlSession.close();
         }
+    }
+
+    /**
+     * 首页操作相关
+     */
+    @Override
+    public List<Article> findArticles(Channel c, int max) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("c", c);
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(max);
+        PageVO<Article> pv = this.findPaginated(Article.class.getName()+".searchArticleByChannel", params);
+        return pv.getDatas();
+    }
+
+    @Override
+    public List<Article> findHeadLine(int max) {
+        SqlSession sqlSession = MyBatisUtil.getSession();
+
+        try {
+            return sqlSession.selectList(Article.class.getName()+".findHeadline", max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            sqlSession.rollback();
+        } finally {
+            sqlSession.close();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Article> findRecommend(int max) {
+        SqlSession sqlSession = MyBatisUtil.getSession();
+
+        try {
+            return sqlSession.selectList(Article.class.getName()+".findRecommend", max);
+        } catch (Exception e) {
+            e.printStackTrace();
+            sqlSession.rollback();
+        } finally {
+            sqlSession.close();
+        }
+        return null;
+
     }
 }

@@ -35,7 +35,7 @@ public class ChannelDaoImpleForMyBatisTest {
 
     @Test
     public void findChannelByName() {
-        PageVO<Channel> pv = channelDao.findChannelByName(0,Integer.MAX_VALUE,null);
+        PageVO<Channel> pv = channelDao.findChannelByName(null);
         List<Channel> channels = pv.getDatas();
         int size = channels.size();
         for(int i = 0; i < size; i++) {

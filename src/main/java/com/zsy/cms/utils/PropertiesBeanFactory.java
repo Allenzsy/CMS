@@ -1,11 +1,5 @@
 package com.zsy.cms.utils;
 
-import com.zsy.cms.backend.dao.ArticleDao;
-import com.zsy.cms.backend.dao.ChannelDao;
-import com.zsy.cms.backend.dao.imple.ArticleDaoImpleForSQL;
-import com.zsy.cms.backend.model.Channel;
-
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.Properties;
