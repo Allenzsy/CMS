@@ -1,10 +1,14 @@
 package com.zsy.cms.backend.view;
 
+import com.zsy.cms.SystemContext;
 import com.zsy.cms.backend.dao.ArticleDao;
+import com.zsy.cms.backend.dao.ChannelDao;
 import com.zsy.cms.backend.model.Article;
+import com.zsy.cms.backend.model.Channel;
 import com.zsy.cms.utils.BeanFactory;
 import com.zsy.cms.utils.PageVO;
 import com.zsy.cms.utils.PropertiesBeanFactory;
+import com.zsy.cms.utils.RequestUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,23 +16,32 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @WebServlet("/backend/ArticleServlet")
 public class ArticleServlet extends BaseServlet {
 
     ArticleDao articleDao;
+    ChannelDao channelDao;
+
+    // 用来打开添加文章的界面
+    public void addInput(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // 获取提交文章的表单信息
+
+        // 查出所有的频道列表，然后放到request中
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(Integer.MAX_VALUE);
+        PageVO<Channel> pv = channelDao.findChannelByName(null);
+        request.setAttribute("channels", pv.getDatas());
+        // forward 到添加文章界面
+        request.getRequestDispatcher("/backend/article/add_article.jsp").forward(request, response);
+    }
 
     public void add(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 获取提交文章的表单信息
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String source = request.getParameter("source");
-
-        Article a = new Article();
-        a.setTitle(title);
-        a.setContent(content);
-        a.setSource(source);
-
+        Article a = RequestUtil.copyParams(Article.class, request);
         articleDao.addArticle(a);
 
         // 显示文章添加成功页面
@@ -65,9 +78,13 @@ public class ArticleServlet extends BaseServlet {
         }
 
         Article a = articleDao.findArticleById(id, request, response);
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(Integer.MAX_VALUE);
+        PageVO<Channel> pv = channelDao.findChannelByName(null);
 
         // forward 到更新的jsp页面
         request.setAttribute("updateArticle", a);
+        request.setAttribute("channels", pv.getDatas());
         request.getRequestDispatcher("/backend/article/update_article.jsp").forward(request, response);
 
     }
@@ -75,22 +92,14 @@ public class ArticleServlet extends BaseServlet {
     public void update(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 根据提交内容，获取信息
         String id = request.getParameter("id");
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String source = request.getParameter("source");
-
         if(id == null) {
             request.setAttribute("error", "删除错误，id不能为空");
             request.getRequestDispatcher("/backend/common/error.jsp").forward(request, response);
             return;
         }
 
-        Article a = new Article();
-        a.setId(Integer.parseInt(id));
-        a.setTitle(title);
-        a.setContent(content);
-        a.setSource(source);
-
+        Article a = RequestUtil.copyParams(Article.class, request);
+        // 更新文章的内容
         articleDao.updateArticle(a);
 
         // 更新成功forward到更新成功页面
@@ -101,25 +110,9 @@ public class ArticleServlet extends BaseServlet {
     // 这里重写BaseServlet中的方法，将缺省方法改为查询
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int offset = 0;
-        int pageSize = 5;
-        // 希望从requset中获取offset， 从session中获取pageSize，session中如果没有那么则设置缺省值
-        try {
-            offset = Integer.parseInt(request.getParameter("pager.offset"));
-        } catch (Exception ignore) { }
-        // 如果从request中拿到了pageSize的值，那么需要更新Session中的PageSize的值
-        if(request.getParameter("pageSize") != null) {
-            request.getSession().setAttribute("pageSize", Integer.parseInt(request.getParameter("pageSize")));
-        }
-        Integer ps = (Integer) request.getSession().getAttribute("pageSize");
-        if(ps == null) {
-            request.getSession().setAttribute("pageSize", pageSize);
-        } else {
-            pageSize = ps;
-        }
 
         String title = request.getParameter("title");
-        PageVO<Article> pv = articleDao.searchArticle(title, offset, pageSize);
+        PageVO<Article> pv = articleDao.findArticleByTitle(title);
 
         // 将查询到的文章传递给jsp
         request.setAttribute("articles", pv.getDatas());
@@ -130,7 +123,9 @@ public class ArticleServlet extends BaseServlet {
         request.getRequestDispatcher("/backend/article/article_list.jsp").forward(request, response);
     }
 
-    public void setArticleDao(ArticleDao articleDao) {
-        this.articleDao = articleDao;
+    public void setArticleDao(ArticleDao articleDao) { this.articleDao = articleDao; }
+
+    public void setChannelDao(ChannelDao channelDao) {
+        this.channelDao = channelDao;
     }
 }

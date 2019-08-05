@@ -109,7 +109,7 @@ public class LoginServlet extends BaseServlet {
 //        } //调试先取消验证码验证
 
         // 判断用户名是否存在，判断密码是否正确
-        Admin admin = adminDao.getAdmin(username);
+        Admin admin = adminDao.findAdminByUsername(username);
 
         if(admin == null) {
             //forward 到 login.jsp 并且提示用户名不存在

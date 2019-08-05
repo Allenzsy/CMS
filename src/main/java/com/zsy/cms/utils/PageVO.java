@@ -14,11 +14,11 @@ public class PageVO<E> {
         this.total = total;
     }
 
-    public List getDatas() {
+    public List<E> getDatas() {
         return datas;
     }
 
-    public void setDatas(List datas) {
+    public void setDatas(List<E> datas) {
         this.datas = datas;
     }
 }

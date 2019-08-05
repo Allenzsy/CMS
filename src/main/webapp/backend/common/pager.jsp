@@ -10,7 +10,9 @@
 
 <script type="text/javascript">
     function selectPagesize(field) {
-    window.location = document.getElementById("firstPage").href + "$pageSize="+field.value;
+    // alert(document.getElementById("firstPage").href + "$pageSize="+field.value);
+    window.location = document.getElementById("firstPage").href + "&pageSize="+field.value;
+
     // 这里进行更加通用化处理，希望代码用在其他地方能够尽可能修改的少一些，利用page-taglib生成的url
     }
 </script>

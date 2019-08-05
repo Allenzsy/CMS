@@ -116,6 +116,44 @@ fieldset div {
 				*(最多100个字符)<br />
 			</div>
 			<div>
+				<label for="author">作者</label>
+				<input type="text" name="author" id="author" value="${updateArticle.author}" size="30" maxlength="100" />
+			</div>
+			<div>
+				<label for="keyword">关键字</label>
+				<input type="text" name="keyword" id="keyword" value="${updateArticle.keyword}" size="30" maxlength="100" />
+			</div>
+			<div>
+				<label for="type">分类</label>
+				<select name="type" id="type" >
+					<option value="原创" <c:if test="${updateArticle.type == '原创'}">selected</c:if> >原创</option>
+					<option value="转载" <c:if test="${updateArticle.type == '转载'}">selected</c:if> >转载</option>
+				</select>
+			</div>
+			<div>
+				<label></label>
+				<input type="checkbox" name="recommend" value="true" <c:if test="${updateArticle.recommend}">checked="checked"</c:if> />是否推荐阅读
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="checkbox" name="headline" value="true" <c:if test="${updateArticle.headline}">checked="checked"</c:if> />是否首页头条 <!--选中的时候是true-->
+			</div>
+			<div>
+				<label for="channels">所属频道</label>
+				<select name="channels" id="channels" multiple="multiple"><!--这里需要根据查询显示所有频道，不能写死-->
+					<c:forEach items="${channels}" var="c">
+						<option value="${c.id}"
+								<c:forEach items="${updateArticle.channels}" var="ca">
+									<c:if test="${ca.id == c.id}">selected</c:if>
+								</c:forEach>
+						>${c.name}</option>
+					</c:forEach>
+				</select>
+			</div>
+			<div>
+				<label for="intro">简介</label>
+				<textarea rows="5" cols="100" name="intro" id="intro">${updateArticle.intro}</textarea>
+				<br />
+			</div>
+			<div>
 				<label for="content">文章内容</label>
 				<textarea rows="20" cols="100" name="content" id="content">${updateArticle.content}</textarea> <!--多行文本区域没有value=，直接放在textarea中间就可以-->
 				<br />
