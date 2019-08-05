@@ -27,9 +27,10 @@ public interface ArticleDao {
     /**
      * 首页操作相关：
      */
-    public List<Article> findArticles(Channel c, int max);
-    public List<Article> findHeadLine(int max);
-    public List<Article> findRecommend(int max);
+    public List<Article> searchArticles(Channel c, int max);
+    public List<Article> searchHeadLine(int max);
+    public List<Article> searchRecommend(int max);
+    public PageVO<Article> searchArticleByKeyword(String keyword);
 
 
 

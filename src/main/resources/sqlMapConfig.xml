@@ -8,6 +8,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias type="com.zsy.cms.backend.model.Admin" alias="Admin"/>
         <typeAlias type="com.zsy.cms.backend.model.Article" alias="Article"/>
         <typeAlias type="com.zsy.cms.backend.model.Channel" alias="Channel"/>
+        <typeAlias type="com.zsy.cms.backend.model.Member" alias="Member"/>
     </typeAliases>
     <environments default="development"><!--environment 元素体中包含了事务管理和连接池的配置-->
         <environment id="development">
@@ -24,6 +25,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="com/zsy/cms/backend/dao/imple/Admin.xml" />
         <mapper resource="com/zsy/cms/backend/dao/imple/Article.xml" />
         <mapper resource="com/zsy/cms/backend/dao/imple/Channel.xml" />
+        <mapper resource="com/zsy/cms/backend/dao/imple/Member.xml" />
 
 <!--        <mapper resource="cn/com/leadfar/cms/backend/dao/impl/Article.xml"
             D:\java\ideaProject\CMS\src\main\java\com\zsy\cms\backend\dao\imple\Admin.xml

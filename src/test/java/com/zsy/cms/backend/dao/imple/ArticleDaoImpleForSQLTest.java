@@ -42,4 +42,9 @@ public class ArticleDaoImpleForSQLTest {
 
 
     }
+    @Test
+    public void a() {
+        double a = 5/2;
+        System.out.println(a);
+    }
 }

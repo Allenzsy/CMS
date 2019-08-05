@@ -6,16 +6,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="stylesheet" type="text/css" href="style/main.css">
-<title>${cms:article(pageContext, param.articleId).title}</title>
+<title>${cms:channel(pageContext, param.channelId).name}</title>
 </head>
 <body>
-
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/backend/";
-	System.out.println(basePath);
-%>
-
 <!-- 网站的logo，其它背景，首页横幅广告等等 -->
 <div id="top">
 	<img src="images/logo.gif" class="logo" title="领航致远JAVA联盟">
@@ -26,17 +19,11 @@
 <jsp:include page="NavServlet?method=navList"></jsp:include>
 <!-- 首页中间 -->
 <div id="mid">
-	<!-- 首页左边 -->
-	<div id="left" style="text-align:left">
-		首页 -&gt; ${cms:channel(pageContext, param.channelId).name} - ${cms:article(pageContext, param.articleId).title}
-		<hr>
-		<!-- 文章标题及简介 -->
-		<jsp:include page="NavServlet?method=articleDetail"></jsp:include><%--之前转向articl.jsp的时候已经附加参数articleId，所以这里不用再加了--%>
-	</div>
+	<!-- 首页左边 --><%--这里应该已经有了channelId--%>
+	<jsp:include page="NavServlet?method=channelIndex"></jsp:include>
 	<!-- 首页右边 -->
 	<%--会员登陆--%>
 	<jsp:include page="/portlet/login_form.jsp"></jsp:include>
-	<%--网站搜索--%>
 	<div class="right">
 		<div class="right_topic_1">
 			本站搜索
@@ -53,8 +40,9 @@
 			</form>
 		</div>
 	</div>
-	<%--相关文章--%>
-	<jsp:include page="NavServlet?method=keywords"></jsp:include>
+
+	<%--最新发表--%>
+	<jsp:include page="NavServlet?method=latest"></jsp:include>
 	
 	<div style="clear:both"></div>
 </div>

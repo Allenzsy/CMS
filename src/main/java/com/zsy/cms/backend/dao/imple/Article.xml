@@ -13,19 +13,26 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <insert id="insert_channel_article" parameterType="Map">
         insert into t_channel_article (channelId, articleId) values (#{cid},#{aid});
     </insert>
+    <insert id="insert_article_keyword" parameterType="Map">
+        insert into t_article_keyword (articleId, keyword) values (#{aid},#{keyword});
+    </insert>
 
 
     <delete id="del" parameterType="int">
-        delete t_article, t_channel_article from t_article
+        delete t_article, t_channel_article, t_article_keyword from t_article
         left join t_channel_article on t_article.id = t_channel_article.articleId
+        left join t_article_keyword on t_article.id = t_article_keyword.articleId
         where t_article.id = #{id}
     </delete>
     <delete id="delCA_Conn" parameterType="int">
         delete from t_channel_article where articleId=#{id}
     </delete>
+    <delete id="delAK_Conn" parameterType="int">
+        delete from t_article_keyword where articleId=#{id}
+    </delete>
 
 
-    <select id="searchArticleByTitle" parameterType="Map" resultType="Article">
+    <select id="findArticleByTitle" parameterType="Map" resultType="Article">
         select * from t_article
         <if test="title != null">
             where title like '%${title}%'
@@ -33,7 +40,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         order by createTime desc
         limit #{offset},#{pageSize}
     </select>
-    <select id="searchArticleByTitleForTotal" parameterType="Map" resultType="int">
+    <select id="findArticleByTitleForTotal" parameterType="Map" resultType="int">
         select count(*) from t_article
         <if test="title != null">
             where title like '%${title}%'
@@ -71,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     </update>
 
 
-    <select id="searchArticleByChannel" parameterType="Map" resultType="Article">
+    <select id="findArticleByChannel" parameterType="Map" resultType="Article">
         select * from  t_article a
         <if test="c != null">
             ,t_channel_article ca where ca.channelId = #{c.id}
@@ -81,7 +88,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         order by createTime desc
         limit #{offset},#{pageSize}
     </select>
-    <select id="searchArticleByChannelForTotal" parameterType="Map" resultType="int">
+    <select id="findArticleByChannelForTotal" parameterType="Map" resultType="int">
         <choose>
             <when test="c != null">
                 select count(*) from  t_article AS a, t_channel_article AS ca where a.id = ca.articleId
@@ -93,11 +100,19 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         </choose>
     </select>
 
-    <select id="findHeadline" parameterType="int" resultType="Article">
+    <!--用于网页的都用Search-->
+    <select id="searchHeadline" parameterType="int" resultType="Article">
         select * from t_article where headline=true order by createTime desc limit 0,#{max}
     </select>
-    <select id="findRecommend" parameterType="int" resultType="Article">
+    <select id="searchRecommend" parameterType="int" resultType="Article">
         select * from t_article where recommend=true order by createTime desc limit 0,#{max}
+    </select>
+    <!-- 查询相关文章用 -->
+    <select id="searchArticleByKeyword" parameterType="Map" resultType="Integer">
+        select distinct articleId from t_article_keyword where keyword in (${keyword})
+    </select>
+    <select id="searchArticleByIds" parameterType="Map" resultType="Article">
+        select * from t_article where id in (${ids})
     </select>
 
 
