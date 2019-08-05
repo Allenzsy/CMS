@@ -1,6 +1,6 @@
 # CMS
 
-## 第一个大版本：初步完成CMS需求
+# 第一个大版本：初步完成CMS需求
 
 ###  login 中的 checkcode
 
@@ -175,16 +175,61 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 ### 第一阶段完成的内容
 
 1. 完整实现了ArticleServlet、ChannelServlet、LoginServlet
+
    - 将与Article有关的Servlet全部合成到ArticleServlet类中
+     - add，delete，update，execute用于查询
    - 将与Channel有关的Servlet全部合成到ChannelServlet类中
+     - 同Article
+   - 将与Login有关的Servlet全部合成到LoginServlet中
+     - 将LoginServlet、LogoutServlet、CheckCodeServlet这些与登录有关的Servlet，全部合成到LoginServlet中。其中方法checkcode用于生成验证码；方法execute用于登录用户名和密码验证；方法quit用于退出后台系统。
+2. 定义了接口ArticleDao、ChannelDao，AdminDao，以及他们的sql实现
 
-1. 定义了接口ArticleDao、ChannelDao，AdminDao，以及他们的sql实现
    - 将与Article有关的数据库操作全部放到ArticleDao中
+
    - 将与Channel有关的数据库操作全部放到ChannelDao中
+
    - 将与Admin有关的数据库操作全部放到AdminDao中
-2. 创建了Article，Channel，Admin实体类
-   - 
+
+3. 创建了Article，Channel，Admin实体类
+4. 创建了t_admin，t_article，t_channel数据表。
+
+# 正式进入项目开发过程
+
+在学习了各种基础的WEB应用开发技术，以及初步搭建了项目开发框架之后（技术攻关，技术调研，做DEMO），重新思考整个需求，及其概念模型！正式进入项目开发过程！
+
+当然，需求本身是非常复杂的，你不可能一下子看到需求的全部。但是我们要有这个意识，即先思考需求中的概念模型：管理员、文章、频道、留言、网站、会员等（爬虫稍微复杂一点，后面再来专门考虑），根据概念模型，建立实体类及其数据库表：![概念模型](G:\javaTest\IdeaProjects\CMS\temp\概念模型.JPG)
+
+那么在有了概念模型以后，最初的考虑就显得不够完整，那么需要更加细致的考虑：
+
+## 后台管理系统
+
+- 呈现层
+  - 各种后端向前端传递数据的Servlet
+- DAO层
+  - ArticleDao，ChannelDao，AdminDao
+
+### 文章管理
+
+#### 添加文章
+
+![添加文章综合考虑](G:\javaTest\IdeaProjects\CMS\temp\添加文章综合考虑.JPG)
+
+#### 删除文章
 
 
 
-创建了Admin实体类，t_admin数据库表，并创建了AdminDao接口
+![删除文章综合考虑](G:\javaTest\IdeaProjects\CMS\temp\删除文章综合考虑.JPG)
+
+#### 更新文章
+
+![更新文章综合考虑](G:\javaTest\IdeaProjects\CMS\temp\更新文章综合考虑.JPG)
+
+#### 查询文章
+
+![查询文章综合考虑](G:\javaTest\IdeaProjects\CMS\temp\查询文章综合考虑.JPG)
+
+## 网站
+
+### 访问首页
+
+![网站访问首页](G:\javaTest\IdeaProjects\CMS\temp\网站访问首页.JPG)
