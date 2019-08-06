@@ -37,6 +37,14 @@ public class ChannelDaoImpleForMyBatis extends BaseDao implements ChannelDao {
 
         return pv;
     }
+    @Override
+    public PageVO<Channel> findChannels() {
+        Map<String, Object> params = new HashMap<>();
+        SystemContext.setOffset(0);
+        SystemContext.setPageSize(Integer.MAX_VALUE);
+        PageVO<Channel> pv = this.findPaginated(Channel.class.getName()+".findChannelByName", params);
+        return pv;
+    }
 
     @Override
     public Channel findChannelById(String id, HttpServletRequest request, HttpServletResponse response) {

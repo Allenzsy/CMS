@@ -83,5 +83,13 @@ public class BeanUtilsTest {
         System.out.println(a.getCreateTime());
     }
 
+    @Test
+    public void beanUtilsTest06() throws Exception {
+
+        Article a = new Article();
+        // 当传入不存在的属性的时候不会报错，只是没有赋值而已。
+        BeanUtils.copyProperty(a, "name", "qwe");
+        System.out.println(a);
+    }
 
 }

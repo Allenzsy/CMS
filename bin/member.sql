@@ -4,7 +4,7 @@ create table t_member(
 	id integer not null auto_increment,
 	name varchar(200),
 	email varchar(50),
-	nickName varchar(50),
+	nickName varchar(50) not  null unique,
 	password varchar(20),
 	qq varchar(20),
 	phone varchar(20),

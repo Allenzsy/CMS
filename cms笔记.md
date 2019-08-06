@@ -59,7 +59,8 @@ sendredirect 重新访问一个新的页面，两个页面使用的是不同的r
 
 ### 编辑文章
 
-<center>![img](G:\javaTest\IdeaProjects\CMS\temp\编辑文章流程.JPG)</center>
+![img](temp\编辑文章流程.JPG)
+
 将数据库操作逻辑封装到DAO中，首先实现DAO接口，然后对接口进行相应实现。使得具体的servlet不依赖于具体代码的实现。
 
 利用抽象工厂设计模式，及使用配置文件来避免因为变化所产生的影响
@@ -234,7 +235,9 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 现在直接点击添加是直接转向 add_Article.jsp，但是现在不能这样，因为需要先经过一个 Servlet 先查询到所有 Channel 放到 request 中，然后再转向 add_Article.jsp 才能拿到所有的 Channel。那么由于前面将所有的 Article 的Servlet 都整合在了一起，现在只需要在其中添加一个新的方法就可以了。
 
-### 在使用Maven的情况下，idea导入本地包，不放入Maven本地仓库
+### 导入本地jar包
+
+在使用Maven的情况下，idea导入本地包，不放入Maven本地仓库
 
 首先通过 File ---> Project Structure ---> Modules ---> 点击“+”号，添加jar包。然后选中新添加的，点击 apply。之后再去 Artifacts 中找到 XXX：war exploded 下的  Output Layout 看到右侧有 Available Elements 把新添加的包部署到 WEB-INF 的 lib 下就可以了
 
@@ -272,7 +275,7 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 2. 更新内容时不光要更新 t_article 表，还有 t_channel_article 表；
 
-### 对add和update中的请求参数进行封装
+### 对add和update中请求参数封装
 
 一般在开发过程中，从jsp中得到的参数名称和POJO对象中的属性名称是一致的，此时可以利用JAVA的反射机制进行赋值；
 
@@ -287,10 +290,49 @@ public abstract class GenericServlet implements Servlet, ServletConfig, java.io.
 
 ### 对 DAO 进一步封装
 
-其实封装就是把重复的部分抽离出来，再将变化的东西作为参数送入进去。那么要封装好，需要遵守一些命名规则：
+#### 创建父类BaseDao
+
+简单利用创建父类来减少重复代码，其实封装就是把重复的部分抽离出来，再将变化的东西作为参数送入进去。那么要封装好，需要遵守一些命名规则：
 
 >1. MyBatis的namespace要取实体类的全路类名
 >2. Mybatis的语句id要遵守一些规则，例如CRUD的操作，添加就是add，删除就是del
->
->
+
+分页较为复杂，那么封装的时候，可以规定由子类去传入需要用到的查询语句id，以及需要的参数。
+
+#### 利用ThreadLocal去掉参数![未修改前的调用层次](temp/未修改前的调用层次.PNG)
+
+<center>未封装前的调用层次</center>
+我们需要将offset和pageSize参数去掉，减少后续方法的传递层次：![用TreadLocal封装后的过程](temp/用TreadLocal封装后的过程.PNG)
+
+<center>用TreadLocal封装后的过程</center>
+使用ThreadLocal去除分页时需要的offset和pageSize参数。实际上在不考虑多线程的情况下，可以通过写一个类 SystemContext 里面添加两个静态属性 offset，pageSize。这样在需要的位置提前设置好值，需要用的时候直接拿出来用。然而在**多线程情况下**，如果只有这一份变量，便会涉及并发修改同一个变量的问题。所以，利用ThreadLocal为每一个线程创建一份变量。
+
+### 用服务器端include技术制作首页
+
+#### 最直观的流程
+
+对于首页，一个直观的流程是：
+
+> 1. 访问一个Servlet，在Servlet中将首页需要的全部查询出来
+> 2. 重定向到index.jsp
+> 3. 在jsp中将查询结果显示出来。
+
+那么这个流程涉及到的问题就是：
+
+> 1. 如果首页的布局发生变化，需要重新修改大量查询的代码；
+> 2. 首页中布局，以及转向到其他页面布局大多数是**重复的**，例如：多个频道下虽然显示的文章是不相同的，但是这些文章的布局是相同的。
+
+#### 利用服务端include实现
+
+1. 网站的首页，频道的首页，文章的详细显示页面
+2. 在查看文章的详细信息时，【相关文章】功能的列表显示
+    - 创建一个关键字和文章的关联表t_article_keyword，表中两个字段：articleId和keyword
+    - 当插入文章之后，按照keyword（空格或逗号分隔），向关联表插入记录，每个关键字一条记录
+      	- 查询相关文章的时候，首先根据文章的关键字，查出所有相关文章的ID，然后根据ID
+         	列表查询出文章的标题来！
+    - 如果文章被删除，则文章和关键字之间的关联信息也要被同时删除
+
+
+
+使用注解配置[Servlet](https://www.cnblogs.com/stAr-1/p/7424270.html)
 

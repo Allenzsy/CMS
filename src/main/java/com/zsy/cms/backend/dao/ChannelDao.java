@@ -16,6 +16,7 @@ public interface ChannelDao {
     // findArticle需要输入offset pagesize，需要输出total articles的list,输出有两个且类型不同时，应该再创建一个类，
     // 这种类实际上是value object
     public PageVO<Channel> findChannelByName(String name);
+    public PageVO<Channel> findChannels();
 
     public Channel findChannelById(String id, HttpServletRequest request, HttpServletResponse response);
 

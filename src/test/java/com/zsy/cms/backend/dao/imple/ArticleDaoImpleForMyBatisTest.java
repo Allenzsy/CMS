@@ -27,14 +27,13 @@ public class ArticleDaoImpleForMyBatisTest {
         Article a = new Article();
         a.setTitle("测试文章"+rand.nextInt(999999));
         a.setContent("测试文章内容"+rand.nextInt(9999999));
-        a.setHeadline(true);
-        a.setType("原创");
+        a.setKeyword("java jvm");
 
         Set<Channel> channels = new HashSet<>();
         Channel c1 = new Channel();
-        c1.setId(10);
+        c1.setId(6);
         Channel c2 = new Channel();
-        c2.setId(11);
+        c2.setId(7);
         channels.add(c1);
         channels.add(c2);
         a.setChannels(channels);
@@ -45,7 +44,7 @@ public class ArticleDaoImpleForMyBatisTest {
 
     @Test
     public void delArticle() {
-        articleDao.delArticle(new String[]{"6"});
+        articleDao.delArticle(new String[]{"12"});
     }
 
     @Test
@@ -93,5 +92,22 @@ public class ArticleDaoImpleForMyBatisTest {
 
         articleDao.updateArticle(a);
 
+    }
+
+    @Test
+    public void searchHeadLineTest() {
+        List<Article> list= articleDao.searchHeadLine(2);
+        System.out.println(list.size());
+    }
+
+    @Test
+    public void keywordTest() {
+        String keyword = "java jsp";
+        String[] keywords = keyword.split(",| ");
+        System.out.println(keywords.length);
+    }
+
+    @Test public void searchArticleByKeywordTest() {
+        articleDao.searchArticleByKeyword("java,jsp,javEE");
     }
 }
