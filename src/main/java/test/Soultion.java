@@ -78,13 +78,13 @@ public class Soultion {
 //        new Soultion().solve();
         Scanner scanner = new Scanner(System.in);
         ArrayList<String> ns = new ArrayList<>();
-        String
-        while(!(s = sc.nextLine()).equals("")) {
-            ns.add(scanner.nextLine());
-        }
-        for(String s : ns) {
-            System.out.println(s);
-        }
+//        String
+//        while(!(s = sc.nextLine()).equals("")) {
+//            ns.add(scanner.nextLine());
+//        }
+//        for(String s : ns) {
+//            System.out.println(s);
+//        }
 
     }
 

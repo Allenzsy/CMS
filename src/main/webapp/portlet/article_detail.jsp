@@ -12,3 +12,7 @@
 <p>
 	${article.content}
 </p>
+
+<div>
+	<jsp:include page="/CommentServlet?method=comments"></jsp:include>
+</div>

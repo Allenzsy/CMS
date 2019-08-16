@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE configuration
-PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-config.dtd">
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
     <typeAliases><!--可以对包中的类起别名？-->
@@ -9,13 +9,14 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <typeAlias type="com.zsy.cms.backend.model.Article" alias="Article"/>
         <typeAlias type="com.zsy.cms.backend.model.Channel" alias="Channel"/>
         <typeAlias type="com.zsy.cms.backend.model.Member" alias="Member"/>
+        <typeAlias type="com.zsy.cms.backend.model.Comment" alias="Comment"/>
     </typeAliases>
     <environments default="development"><!--environment 元素体中包含了事务管理和连接池的配置-->
         <environment id="development">
             <transactionManager type="JDBC" />
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.cj.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://localhost/cms" />
+                <property name="url" value="jdbc:mysql://localhost/cms?useUnicode=true&amp;characterEncoding=utf-8" />
                 <property name="username" value="root" />
                 <property name="password" value="123456" />
             </dataSource>
@@ -26,10 +27,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="com/zsy/cms/backend/dao/imple/Article.xml" />
         <mapper resource="com/zsy/cms/backend/dao/imple/Channel.xml" />
         <mapper resource="com/zsy/cms/backend/dao/imple/Member.xml" />
+        <mapper resource="com/zsy/cms/backend/dao/imple/Comment.xml" />
 
-<!--        <mapper resource="cn/com/leadfar/cms/backend/dao/impl/Article.xml"
-            D:\java\ideaProject\CMS\src\main\java\com\zsy\cms\backend\dao\imple\Admin.xml
-            https://blog.csdn.net/u010648555/article/details/70880425
- />-->
+        <!--        <mapper resource="cn/com/leadfar/cms/backend/dao/impl/Article.xml"
+                    D:\java\ideaProject\CMS\src\main\java\com\zsy\cms\backend\dao\imple\Admin.xml
+                    https://blog.csdn.net/u010648555/article/details/70880425
+         />-->
     </mappers>
 </configuration>

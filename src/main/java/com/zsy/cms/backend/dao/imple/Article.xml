@@ -115,6 +115,16 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         select * from t_article where id in (${ids})
     </select>
 
+    <!--  更新文章的留言数  -->
+    <select id="selectLeaveNumber" parameterType="int" resultType="int"> select leaveNumber from t_article where id = #{id} </select>
+    <update id="updateLeaveNumber" parameterType="Article">
+        update t_article set leaveNumber = #{leaveNumber} where id = #{id}
+    </update>
+    <!--  更新文章的点击量  -->
+    <select id="selectClickNumber" parameterType="int" resultType="int"> select clickNumber from t_article where id = #{id} </select>
+    <update id="updateClickNumber" parameterType="Article">
+         update t_article set clickNumber = #{clickNumber} where id = #{id}
+    </update>
 
 
 </mapper>

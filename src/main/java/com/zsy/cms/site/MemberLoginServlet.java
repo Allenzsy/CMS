@@ -89,7 +89,7 @@ public class MemberLoginServlet extends BaseServlet {
         OutputStream out = response.getOutputStream();
         // 将图片转换为JPEG类型 BufferImage 实现了RenderedImage
         boolean susses = ImageIO.write(img, "JPEG", out);
-        System.out.println(susses);
+//        System.out.println(susses);
         // 将生成的验证码放在HTTP session中
         request.getSession().setAttribute("genCode", checkcode.toString());
 

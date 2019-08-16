@@ -60,7 +60,7 @@ public class BaseServlet extends HttpServlet {
 
         // 获取需要执行的方法
         String method = request.getParameter("method");
-        System.out.println(method);
+//        System.out.println(method);
         // 这里获得的方法名，有可能是null，也有可能是空串""，这两种都应该是空。如果是具体方法则用反射执行具体方法
         if(method == null || method.trim().equals("")) {
             execute(request, response);

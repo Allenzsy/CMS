@@ -50,7 +50,7 @@ public class ArticleDaoImpleForMyBatisTest {
     @Test
     public void findArticleByTitle() {
         PageVO<Article> pv;
-        pv = articleDao.findArticleByTitle("8");
+        pv = articleDao.findArticleByTitle("4");
         System.out.println("Total:" + pv.getTotal());
         List<Article> datas = pv.getDatas();
         for (Iterator iterator = datas.iterator(); iterator.hasNext(); ) {
